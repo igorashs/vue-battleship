@@ -79,7 +79,31 @@ describe('createGameBoard', () => {
     expect(createGameBoard().placeShipAt(ship, { position: 'y' })).toBe(false);
   });
 
-  // todo ships cannot collapse and go outside board limits
+  it('The ships cannot overlap', () => {
+    const gameBoard = createGameBoard();
+
+    expect(gameBoard.placeShipAt(createShip({ length: 3 }), { x: 0, y: 0 })).toBe(true);
+    expect(gameBoard.placeShipAt(createShip({ length: 3 }), { x: 0, y: 0 })).toBe(false);
+  });
+
+  it('The ships cannot stay side by side', () => {
+    const gameBoard = createGameBoard();
+
+    expect(gameBoard.placeShipAt(createShip({ length: 2 }), { x: 0, y: 0 })).toBe(true);
+    expect(gameBoard.placeShipAt(createShip({ length: 2 }), { x: 0, y: 1 })).toBe(false);
+    expect(gameBoard.placeShipAt(createShip({ length: 2 }), { x: 2, y: 0 })).toBe(false);
+    expect(gameBoard.placeShipAt(createShip({ length: 2 }), { x: 0, y: 2 })).toBe(true);
+  });
+
+  it('The ships cannot be placed outside the board', () => {
+    const gameBoard = createGameBoard();
+
+    expect(gameBoard.placeShiptAt(createShip({ length: 3 }), { x: 7, y: 0 })).toBe(true);
+    expect(gameBoard.placeShiptAt(createShip({ length: 3 }), { x: 8, y: 2 })).toBe(false);
+    expect(gameBoard.placeShiptAt(createShip({ length: 4 }), { x: 0, y: 8, position: 'v' })).toBe(
+      false,
+    );
+  });
 
   it('it can be only 1 ship with length = 4', () => {
     const gameBoard = createGameBoard();
