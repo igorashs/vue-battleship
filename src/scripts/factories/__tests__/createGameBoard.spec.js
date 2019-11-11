@@ -6,8 +6,9 @@ import createShip from '../createShip';
 //  's' - ship itself
 //  'x' - missed hi
 
-// valid format for x: 'aA-jJ' , [0 - 9]
-// valid format for y: [0 - 9]
+// valid format for x and y: [0 - 9]
+
+// todo report whether or not all ships have been sunk
 
 describe('createGameBoard', () => {
   it('create a gameBoard with no ships', () => {
@@ -16,61 +17,43 @@ describe('createGameBoard', () => {
 
   it('return true if the ship was placed at A5', () => {
     const ship = createShip({ length: 1 });
-    expect(createGameBoard().placeShipAt(ship, { x: 'A', y: 5, position: 'vertical' })).toBe(true);
+    expect(createGameBoard().placeShipAt(ship, { x: 0, y: 5, position: 'vertical' })).toBe(true);
   });
 
-  it('number instead of letter for x also works', () => {
-    const ship = createShip({ length: 2 });
-    expect(createGameBoard().placeShipAt(ship, { x: 0, y: 5, position: 'horizontal' })).toBe(true);
-  });
-
-  it('x cord is case insensitive', () => {
-    const ship = createShip({ length: 4 });
-    expect(createGameBoard().placeShipAt(ship, { x: 'c', y: 3, position: 'horizontal' })).toBe(
-      true,
-    );
-  });
-
-  it('return false if y cord is not a number', () => {
+  it('return false if cords are not in a valid format', () => {
     const ship = createShip({ length: 1 });
-    expect(createGameBoard().placeShipAt(ship, { x: 'd', y: 'c', position: 'x' })).toBe(false);
-    expect(createGameBoard().placeShipAt(ship, { x: 'd', y: '4', position: 'x' })).toBe(false);
-  });
-
-  it('return false if cords are string numbers', () => {
-    const ship = createShip({ length: 1 });
-    expect(createGameBoard().placeShipAt(ship, { x: 'd', y: 'c', position: 'x' })).toBe(false);
+    expect(createGameBoard().placeShipAt(ship, { x: 'D', y: 'c', position: 'x' })).toBe(false);
     expect(createGameBoard().placeShipAt(ship, { x: '4', y: 4, position: 'x' })).toBe(false);
     expect(createGameBoard().placeShipAt(ship, { x: 4, y: '4', position: 'x' })).toBe(false);
   });
 
   it('return false if cords are not in a valid range', () => {
     const ship = createShip({ length: 3 });
-    expect(createGameBoard().placeShipAt(ship, { x: 'Z', y: -12, position: 'vertical' })).toBe(
+    expect(createGameBoard().placeShipAt(ship, { x: 10, y: -12, position: 'vertical' })).toBe(
       false,
     );
   });
 
   it('position works with shorthands and is case insensitive', () => {
     const ship = createShip({ length: 1 });
-    expect(createGameBoard().placeShipAt(ship, { x: 'b', y: 0, position: 'v' })).toBe(true);
+    expect(createGameBoard().placeShipAt(ship, { x: 1, y: 0, position: 'v' })).toBe(true);
     expect(createGameBoard().placeShipAt(ship, { x: 0, y: 0, position: 'X' })).toBe(true);
     expect(createGameBoard().placeShipAt(ship, { x: 4, y: 0, position: 'veErTiCal' })).toBe(true);
   });
 
   it('return false if position is not valid', () => {
     const ship = createShip({ length: 1 });
-    expect(createGameBoard().placeShipAt(ship, { x: 'b', y: 0, position: 'diagonal' })).toBe(false);
+    expect(createGameBoard().placeShipAt(ship, { x: 1, y: 0, position: 'diagonal' })).toBe(false);
   });
 
   it('work with default horizontal position if is not defined', () => {
     const ship = createShip({ length: 2 });
     const gameBoard = createGameBoard();
-    expect(gameBoard.placeShipAt(ship, { x: 'a', y: 0 })).toBe(true);
-    expect(gameBoard.receiveAttack({ x: 'a', y: 1 })).toBe(true);
+    expect(gameBoard.placeShipAt(ship, { x: 0, y: 0 })).toBe(true);
+    expect(gameBoard.receiveAttack({ x: 0, y: 1 })).toBe(true);
   });
 
-  it('return false if cords or position are not specified', () => {
+  it('return false if cords are not specified', () => {
     const ship = createShip({ length: 3 });
     expect(createGameBoard().placeShipAt(ship)).toBe(false);
     expect(createGameBoard().placeShipAt(ship, {})).toBe(false);
@@ -153,7 +136,7 @@ describe('createGameBoard', () => {
     expect(gameBoard.isReady()).toBe(true);
   });
 
-  it('can take hits only when board is ready and return an object with ships required', () => {
+  it('can take hits only when board is ready and return an object with required ships', () => {
     const gameBoard = createGameBoard();
 
     gameBoard.receiveAttack({ x: 0, y: 0 }).toEqual({
