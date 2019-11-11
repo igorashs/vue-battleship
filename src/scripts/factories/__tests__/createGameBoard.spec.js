@@ -17,11 +17,11 @@ describe('createGameBoard', () => {
     expect(gameBoard.getAliveShipsCount()).toBe(0);
   });
 
-  it('return true if the ship was placed at A5 and counted as alive', () => {
+  it('return true if the ship was placed at A5 vertically and counted as alive', () => {
     const gameBoard = createGameBoard();
     const ship = createShip({ length: 1 });
 
-    expect(gameBoard.placeShipAt(ship, { x: 0, y: 5, position: 'vertical' })).toBe(true);
+    expect(gameBoard.placeShipAt(ship, { x: 0, y: 5, position: 'y' })).toBe(true);
     expect(gameBoard.getAliveShipsCount()).toBe(1);
   });
 
@@ -36,17 +36,7 @@ describe('createGameBoard', () => {
   it('return false if cords are not in a valid range', () => {
     const ship = createShip({ length: 3 });
 
-    expect(createGameBoard().placeShipAt(ship, { x: 10, y: -12, position: 'vertical' })).toBe(
-      false,
-    );
-  });
-
-  it('position works with shorthands and is case insensitive', () => {
-    const ship = createShip({ length: 1 });
-
-    expect(createGameBoard().placeShipAt(ship, { x: 1, y: 0, position: 'v' })).toBe(true);
-    expect(createGameBoard().placeShipAt(ship, { x: 0, y: 0, position: 'X' })).toBe(true);
-    expect(createGameBoard().placeShipAt(ship, { x: 4, y: 0, position: 'veErTiCal' })).toBe(true);
+    expect(createGameBoard().placeShipAt(ship, { x: 10, y: -12, position: 'y' })).toBe(false);
   });
 
   it('return false if position is not valid', () => {
@@ -56,11 +46,7 @@ describe('createGameBoard', () => {
   });
 
   it('work with default horizontal position if is not defined', () => {
-    const ship = createShip({ length: 2 });
-    const gameBoard = createGameBoard();
-
-    expect(gameBoard.placeShipAt(ship, { x: 0, y: 0 })).toBe(true);
-    expect(gameBoard.receiveAttack({ x: 0, y: 1 })).toBe(true);
+    expect(createGameBoard().placeShipAt(createShip({ length: 2 }), { x: 0, y: 0 })).toBe(true);
   });
 
   it('return false if cords are not specified', () => {
