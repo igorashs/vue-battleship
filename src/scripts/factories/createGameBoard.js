@@ -17,13 +17,10 @@ const isCordsValid = ({ x, y }) => {
   return validateCord(x) && validateCord(y);
 };
 
-const isPositionValid = (pos) => pos === 'x' || pos === 'y';
-
-const isShipValid = (ship, [...board], { x, y, position }) => {
-  if (ship && isCordsValid({ x, y }) && isPositionValid(position)) {
-    const isPosX = position === 'x';
+const isShipValid = (ship, [...board], { x, y, isVertical }) => {
+  if (ship && isCordsValid({ x, y })) {
     const startPoint = { x, y };
-    const endPoint = isPosX ? { x: x + ship.getLength(), y } : { x, y: y + ship.getLength() };
+    const endPoint = isVertical ? { x, y: y + ship.getLength() } : { x: x + ship.getLength(), y };
 
     if (isCordsValid(endPoint)) {
       return true;
@@ -62,8 +59,8 @@ const createGameBoard = () => {
     getAliveShipsCount: () => shipsCount - sunkShips,
 
     // TODO
-    placeShipAt(ship, { x = -1, y = -1, position = 'x' } = {}) {
-      if (!this.isReady() && isShipValid(ship, board, { x, y, position })) {
+    placeShipAt(ship, { x = -1, y = -1, isVertical = false } = {}) {
+      if (!this.isReady() && isShipValid(ship, board, { x, y, isVertical })) {
         // place the fucking ship
         shipsCount += 1;
         return true;

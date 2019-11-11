@@ -21,28 +21,22 @@ describe('createGameBoard', () => {
     const gameBoard = createGameBoard();
     const ship = createShip({ length: 1 });
 
-    expect(gameBoard.placeShipAt(ship, { x: 0, y: 5, position: 'y' })).toBe(true);
+    expect(gameBoard.placeShipAt(ship, { x: 0, y: 5, isVertical: true })).toBe(true);
     expect(gameBoard.getAliveShipsCount()).toBe(1);
   });
 
   it('return false if cords are not in a valid format', () => {
     const ship = createShip({ length: 1 });
 
-    expect(createGameBoard().placeShipAt(ship, { x: 'D', y: 'c', position: 'x' })).toBe(false);
-    expect(createGameBoard().placeShipAt(ship, { x: '4', y: 4, position: 'x' })).toBe(false);
-    expect(createGameBoard().placeShipAt(ship, { x: 4, y: '4', position: 'x' })).toBe(false);
+    expect(createGameBoard().placeShipAt(ship, { x: 'D', y: 'c', isVertical: false })).toBe(false);
+    expect(createGameBoard().placeShipAt(ship, { x: '4', y: 4, isVertical: false })).toBe(false);
+    expect(createGameBoard().placeShipAt(ship, { x: 4, y: '4', isVertical: false })).toBe(false);
   });
 
   it('return false if cords are not in a valid range', () => {
     const ship = createShip({ length: 3 });
 
-    expect(createGameBoard().placeShipAt(ship, { x: 10, y: -12, position: 'y' })).toBe(false);
-  });
-
-  it('return false if position is not valid', () => {
-    const ship = createShip({ length: 1 });
-
-    expect(createGameBoard().placeShipAt(ship, { x: 1, y: 0, position: 'diagonal' })).toBe(false);
+    expect(createGameBoard().placeShipAt(ship, { x: 10, y: -12, isVertical: true })).toBe(false);
   });
 
   it('work with default horizontal position if is not defined', () => {
@@ -56,7 +50,7 @@ describe('createGameBoard', () => {
     expect(createGameBoard().placeShipAt(ship, {})).toBe(false);
     expect(createGameBoard().placeShipAt(ship, { x: 2 })).toBe(false);
     expect(createGameBoard().placeShipAt(ship, { y: 2 })).toBe(false);
-    expect(createGameBoard().placeShipAt(ship, { position: 'y' })).toBe(false);
+    expect(createGameBoard().placeShipAt(ship, { isVertical: true })).toBe(false);
   });
 
   it('The ships cannot overlap', () => {
@@ -80,9 +74,9 @@ describe('createGameBoard', () => {
 
     expect(gameBoard.placeShiptAt(createShip({ length: 3 }), { x: 7, y: 0 })).toBe(true);
     expect(gameBoard.placeShiptAt(createShip({ length: 3 }), { x: 8, y: 2 })).toBe(false);
-    expect(gameBoard.placeShiptAt(createShip({ length: 4 }), { x: 0, y: 8, position: 'y' })).toBe(
-      false,
-    );
+    expect(
+      gameBoard.placeShiptAt(createShip({ length: 4 }), { x: 0, y: 8, isVertical: true }),
+    ).toBe(false);
   });
 
   it('it can be only 1 ship with length = 4', () => {
@@ -134,6 +128,7 @@ describe('createGameBoard', () => {
     expect(gameBoard.placeShipAt(createShip({ length: 1 }), { x: 5, y: 4 })).toBe(true);
     expect(gameBoard.placeShipAt(createShip({ length: 1 }), { x: 5, y: 6 })).toBe(true);
     expect(gameBoard.placeShipAt(createShip({ length: 1 }), { x: 5, y: 8 })).toBe(true);
+
     expect(gameBoard.placeShipAt(createShip({ length: 1 }), { x: 9, y: 0 })).toBe(false);
     expect(gameBoard.isReady()).toBe(true);
   });
