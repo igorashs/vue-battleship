@@ -80,7 +80,7 @@ describe('createGameBoard', () => {
 
     expect(gameBoard.placeShiptAt(createShip({ length: 3 }), { x: 7, y: 0 })).toBe(true);
     expect(gameBoard.placeShiptAt(createShip({ length: 3 }), { x: 8, y: 2 })).toBe(false);
-    expect(gameBoard.placeShiptAt(createShip({ length: 4 }), { x: 0, y: 8, position: 'v' })).toBe(
+    expect(gameBoard.placeShiptAt(createShip({ length: 4 }), { x: 0, y: 8, position: 'y' })).toBe(
       false,
     );
   });
