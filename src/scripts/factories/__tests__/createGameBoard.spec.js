@@ -133,24 +133,14 @@ describe('createGameBoard', () => {
     expect(gameBoard.isReady()).toBe(true);
   });
 
-  it('can take hits only when board is ready and return an object with required ships', () => {
+  it('can take hits only when board is ready | return false', () => {
     const gameBoard = createGameBoard();
 
-    gameBoard.receiveAttack({ x: 0, y: 0 }).toEqual({
-      ship4: 1,
-      ship3: 2,
-      ship2: 3,
-      ship1: 4,
-      message: 'Board needs 10 more ships',
-    });
+    gameBoard.receiveAttack({ x: 0, y: 0 }).toBe(false);
 
     expect(gameBoard.placeShipAt(createShip({ length: 4 }), { x: 0, y: 0 })).toBe(true);
-    gameBoard.receiveAttack({ x: 0, y: 0 }).toEqual({
-      ship3: 2,
-      ship2: 3,
-      ship1: 4,
-      message: 'Board needs 9 more ships',
-    });
+
+    gameBoard.receiveAttack({ x: 0, y: 0 }).toBe(false);
 
     expect(gameBoard.isReady()).toBe(false);
   });
@@ -174,17 +164,11 @@ describe('createGameBoard', () => {
     expect(gameBoard.getAliveShipsCount()).toBe(10);
   });
 
-  it('can take hits if board is ready and return true if is hit | false if is missed', () => {
+  it('can take hits if board is ready and return true if it was hit | false if it was  missed', () => {
     const gameBoard = createGameBoard();
 
     expect(gameBoard.placeShipAt(createShip({ length: 4 }), { x: 0, y: 0 })).toBe(true);
-    expect(gameBoard.receiveAttack({ x: 0, y: 0 })).toEqual({
-      ship4: 0,
-      ship3: 2,
-      ship2: 3,
-      ship1: 4,
-      message: 'Board needs 9 more ships',
-    });
+    expect(gameBoard.receiveAttack({ x: 0, y: 0 })).toBe(false);
 
     expect(gameBoard.placeShipAt(createShip({ length: 3 }), { x: 0, y: 2 })).toBe(true);
     expect(gameBoard.placeShipAt(createShip({ length: 3 }), { x: 0, y: 4 })).toBe(true);
@@ -195,13 +179,7 @@ describe('createGameBoard', () => {
     expect(gameBoard.placeShipAt(createShip({ length: 1 }), { x: 6, y: 4 })).toBe(true);
     expect(gameBoard.placeShipAt(createShip({ length: 1 }), { x: 6, y: 6 })).toBe(true);
 
-    expect(gameBoard.receiveAttack({ x: 0, y: 0 })).toEqual({
-      ship4: 0,
-      ship3: 0,
-      ship2: 0,
-      ship1: 1,
-      message: 'Board needs 1 more ship',
-    });
+    expect(gameBoard.receiveAttack({ x: 0, y: 0 })).toBe(false);
 
     expect(gameBoard.placeShipAt(createShip({ length: 1 }), { x: 6, y: 8 })).toBe(true);
 
