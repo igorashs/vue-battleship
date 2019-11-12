@@ -24,6 +24,7 @@ const isCordsValid = ({ x, y }) => {
 };
 
 const isShipPlaceable = (start, end, board, isVertical) => {
+  // vertical position
   if (isVertical) {
     // check the center
     for (let i = start.y; i <= end.y; i += 1) {
@@ -55,36 +56,35 @@ const isShipPlaceable = (start, end, board, isVertical) => {
     return true;
   }
 
-  if (!isVertical) {
-    // check the center
-    for (let i = start.x; i <= end.x; i += 1) {
-      if (board[i][start.y] === 's' || board[i][start.y] === 'B') {
-        return false;
-      }
-    }
-    // check the top side
-    for (let i = start.x - 1; i <= end.x + 1; i += 1) {
-      if (isCordsValid({ x: i, y: start.y - 1 }) && board[i][start.y - 1] === 's') {
-        return false;
-      }
-    }
-    // check the bottom side
-    for (let i = start.x + 1; i <= end.x + 1; i += 1) {
-      if (isCordsValid({ x: i, y: start.y + 1 }) && board[i][start.y + 1] === 's') {
-        return false;
-      }
-    }
-    // check the left side
-    if (isCordsValid({ x: start.x - 1, y: start.y }) && board[start.x - 1][start.y] === 's') {
+  // horizontal position
+  // check the center
+  for (let i = start.x; i <= end.x; i += 1) {
+    if (board[i][start.y] === 's' || board[i][start.y] === 'B') {
       return false;
     }
-    // check the right side
-    if (isCordsValid({ x: start.x + 1, y: start.y }) && board[start.x + 1][start.y] === 's') {
-      return false;
-    }
-    // if its all good
-    return true;
   }
+  // check the top side
+  for (let i = start.x - 1; i <= end.x + 1; i += 1) {
+    if (isCordsValid({ x: i, y: start.y - 1 }) && board[i][start.y - 1] === 's') {
+      return false;
+    }
+  }
+  // check the bottom side
+  for (let i = start.x + 1; i <= end.x + 1; i += 1) {
+    if (isCordsValid({ x: i, y: start.y + 1 }) && board[i][start.y + 1] === 's') {
+      return false;
+    }
+  }
+  // check the left side
+  if (isCordsValid({ x: start.x - 1, y: start.y }) && board[start.x - 1][start.y] === 's') {
+    return false;
+  }
+  // check the right side
+  if (isCordsValid({ x: start.x + 1, y: start.y }) && board[start.x + 1][start.y] === 's') {
+    return false;
+  }
+  // if its all good
+  return true;
 };
 
 const isShipValid = (ship, [...board], { x, y, isVertical }) => {
@@ -104,6 +104,7 @@ const getAllShipCords = (ship, { x, y, isVertical }) => {
   const cords = [];
   const startPoint = { x, y };
 
+  // vertical position
   if (isVertical) {
     const endPoint = { x, y: y + ship.getLength() - 1 };
 
@@ -114,15 +115,14 @@ const getAllShipCords = (ship, { x, y, isVertical }) => {
     return cords;
   }
 
-  if (!isVertical) {
-    const endPoint = { x: x + ship.getLength() - 1, y };
+  // horizontal position
+  const endPoint = { x: x + ship.getLength() - 1, y };
 
-    for (let i = startPoint.x; i <= endPoint.x; i += 1) {
-      cords.push({ x: i, y: startPoint.y });
-    }
-
-    return cords;
+  for (let i = startPoint.x; i <= endPoint.x; i += 1) {
+    cords.push({ x: i, y: startPoint.y });
   }
+
+  return cords;
 };
 
 const isShipRequired = (ship, boardInfo) => {
@@ -141,6 +141,8 @@ const updateBoardInfo = (ship, boardInfo) => {
 const putShipOnBoard = (ship, board, { x, y, isVertical }) => {
   const startPoint = { x, y };
   const newBoard = [...board];
+
+  // vertical position
   if (isVertical) {
     const endPoint = { x, y: y + ship.getLength() - 1 };
 
@@ -172,36 +174,35 @@ const putShipOnBoard = (ship, board, { x, y, isVertical }) => {
     return newBoard;
   }
 
-  if (!isVertical) {
-    const endPoint = { x: x + ship.getLength() - 1, y };
+  // horizontal position
+  const endPoint = { x: x + ship.getLength() - 1, y };
 
-    // place the ship
-    for (let i = startPoint.x; i <= endPoint.x; i += 1) {
-      newBoard[i][startPoint.y] = 's';
-    }
-    // place the top border
-    for (let i = startPoint.x - 1; i <= endPoint.x + 1; i += 1) {
-      if (isCordsValid({ x: i, y: startPoint.y - 1 })) {
-        newBoard[i][startPoint.y - 1] = 'B';
-      }
-    }
-    // place the bottom border
-    for (let i = startPoint.x - 1; i <= endPoint.x + 1; i += 1) {
-      if (isCordsValid({ x: i, y: startPoint.y + 1 })) {
-        newBoard[i][startPoint.y + 1] = 'B';
-      }
-    }
-    // place the left border
-    if (isCordsValid({ x: startPoint.x - 1, y: startPoint.y })) {
-      newBoard[startPoint.x - 1][startPoint.y] = 'B';
-    }
-    // place the right border
-    if (isCordsValid({ x: endPoint.x + 1, y: startPoint.y })) {
-      newBoard[endPoint.x + 1][startPoint.y] = 'B';
-    }
-
-    return newBoard;
+  // place the ship
+  for (let i = startPoint.x; i <= endPoint.x; i += 1) {
+    newBoard[i][startPoint.y] = 's';
   }
+  // place the top border
+  for (let i = startPoint.x - 1; i <= endPoint.x + 1; i += 1) {
+    if (isCordsValid({ x: i, y: startPoint.y - 1 })) {
+      newBoard[i][startPoint.y - 1] = 'B';
+    }
+  }
+  // place the bottom border
+  for (let i = startPoint.x - 1; i <= endPoint.x + 1; i += 1) {
+    if (isCordsValid({ x: i, y: startPoint.y + 1 })) {
+      newBoard[i][startPoint.y + 1] = 'B';
+    }
+  }
+  // place the left border
+  if (isCordsValid({ x: startPoint.x - 1, y: startPoint.y })) {
+    newBoard[startPoint.x - 1][startPoint.y] = 'B';
+  }
+  // place the right border
+  if (isCordsValid({ x: endPoint.x + 1, y: startPoint.y })) {
+    newBoard[endPoint.x + 1][startPoint.y] = 'B';
+  }
+
+  return newBoard;
 };
 
 const createGameBoard = () => {
