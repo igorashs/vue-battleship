@@ -135,11 +135,11 @@ describe('createGameBoard', () => {
   it('can take hits only when board is ready | return false', () => {
     const gameBoard = createGameBoard();
 
-    gameBoard.receiveAttack({ x: 0, y: 0 }).toBe(false);
+    expect(gameBoard.receiveAttack({ x: 0, y: 0 })).toBe(false);
 
     expect(gameBoard.placeShipAt(createShip({ length: 4 }), { x: 0, y: 0 })).toBe(true);
 
-    gameBoard.receiveAttack({ x: 0, y: 0 }).toBe(false);
+    expect(gameBoard.receiveAttack({ x: 0, y: 0 })).toBe(false);
 
     expect(gameBoard.isReady()).toBe(false);
   });
