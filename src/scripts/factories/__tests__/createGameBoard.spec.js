@@ -72,7 +72,6 @@ describe('createGameBoard', () => {
   it('The ships cannot be placed outside the board', () => {
     const gameBoard = createGameBoard();
 
-    expect(gameBoard.placeShipAt(createShip({ length: 3 }), { x: 7, y: 0 })).toBe(false);
     expect(gameBoard.placeShipAt(createShip({ length: 3 }), { x: 8, y: 2 })).toBe(false);
     expect(gameBoard.placeShipAt(createShip({ length: 4 }), { x: 0, y: 8, isVertical: true })).toBe(
       false,
