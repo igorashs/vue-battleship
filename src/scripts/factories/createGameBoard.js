@@ -256,7 +256,35 @@ const createGameBoard = () => {
       }
       return false;
     },
+
+    receiveAttack({ x, y }) {
+      if (this.isReady() && isCordsValid({ x, y })) {
+        if (board[x][y] === 's') {
+          const hitShipData = shipsData.find((sd) => sd.cords.find((c) => c.x === x && c.y === y));
+          const hitIndex = hitShipData.cords.findIndex((c) => c.x === x && c.y === y);
+
+          if (hitShipData.ship.hitAt({ position: hitIndex + 1 }).isSunk()) {
+            sunkShips += 1;
+          }
+
+          board[x][y] = 'x';
+          // ! we can do something with ship if it is sunk thing about it
+          return true;
+        }
+
+        board[x][y] = '*';
+        return false;
+      }
+
+      return false;
+    },
   };
 };
 
 export default createGameBoard;
+
+//  '~' - water or an empty spot
+//  'B' - border of ship
+//  's' - ship itself
+//  'x' - ship was hit
+//  '*' - missed hit
