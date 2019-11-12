@@ -1,4 +1,10 @@
 const REQUIRED_NUMBER_OF_SHIPS = 10;
+const REQUIRED_TYPES_OF_SHIPS = {
+  ship4: 1,
+  ship3: 2,
+  ship2: 3,
+  ship1: 4,
+};
 const MAX_CORD_RANGE = 9;
 const MIN_CORD_RANGE = 0;
 // const receiveAttack = ({ x, y }) => {};
@@ -18,7 +24,6 @@ const isCordsValid = ({ x, y }) => {
 };
 
 const isShipPlaceable = (start, end, board, isVertical) => {
-  // isVertical
   if (isVertical) {
     // check the center
     for (let i = start.y; i <= end.y; i += 1) {
@@ -49,35 +54,37 @@ const isShipPlaceable = (start, end, board, isVertical) => {
     // if its all good
     return true;
   }
-  // !isVertical
-  // check the center
-  for (let i = start.x; i <= end.x; i += 1) {
-    if (board[i][start.y] === 's' || board[i][start.y] === 'B') {
+
+  if (!isVertical) {
+    // check the center
+    for (let i = start.x; i <= end.x; i += 1) {
+      if (board[i][start.y] === 's' || board[i][start.y] === 'B') {
+        return false;
+      }
+    }
+    // check the top side
+    for (let i = start.x - 1; i <= end.x + 1; i += 1) {
+      if (isCordsValid({ x: i, y: start.y - 1 }) && board[i][start.y - 1] === 's') {
+        return false;
+      }
+    }
+    // check the bottom side
+    for (let i = start.x + 1; i <= end.x + 1; i += 1) {
+      if (isCordsValid({ x: i, y: start.y + 1 }) && board[i][start.y + 1] === 's') {
+        return false;
+      }
+    }
+    // check the left side
+    if (isCordsValid({ x: start.x - 1, y: start.y }) && board[start.x - 1][start.y] === 's') {
       return false;
     }
-  }
-  // check the top side
-  for (let i = start.x - 1; i <= end.x + 1; i += 1) {
-    if (isCordsValid({ x: i, y: start.y - 1 }) && board[i][start.y - 1] === 's') {
+    // check the right side
+    if (isCordsValid({ x: start.x + 1, y: start.y }) && board[start.x + 1][start.y] === 's') {
       return false;
     }
+    // if its all good
+    return true;
   }
-  // check the bottom side
-  for (let i = start.x + 1; i <= end.x + 1; i += 1) {
-    if (isCordsValid({ x: i, y: start.y + 1 }) && board[i][start.y + 1] === 's') {
-      return false;
-    }
-  }
-  // check the left side
-  if (isCordsValid({ x: start.x - 1, y: start.y }) && board[start.x - 1][start.y] === 's') {
-    return false;
-  }
-  // check the right side
-  if (isCordsValid({ x: start.x + 1, y: start.y }) && board[start.x + 1][start.y] === 's') {
-    return false;
-  }
-  // if its all good
-  return true;
 };
 
 const isShipValid = (ship, [...board], { x, y, isVertical }) => {
@@ -89,6 +96,31 @@ const isShipValid = (ship, [...board], { x, y, isVertical }) => {
   }
 
   return false;
+};
+
+const getAllShipCords = (ship, { x, y, isVertical }) => {
+  const cords = [];
+  const startPoint = { x, y };
+
+  if (isVertical) {
+    const endPoint = { x, y: y + ship.getLength() };
+
+    for (let i = startPoint.y; i <= endPoint.y; i += 1) {
+      cords.push({ x: startPoint.x, y: i });
+    }
+
+    return cords;
+  }
+
+  if (!isVertical) {
+    const endPoint = { x: x + ship.getLength(), y };
+
+    for (let i = startPoint.x; i <= endPoint.x; i += 1) {
+      cords.push({ x: i, y: startPoint.y });
+    }
+
+    return cords;
+  }
 };
 
 const createGameBoard = () => {
@@ -108,6 +140,14 @@ const createGameBoard = () => {
   let shipsCount = 0;
   let sunkShips = 0;
 
+  const shipsData = [];
+  const boardInfo = {
+    ship4: 0,
+    ship3: 0,
+    ship2: 0,
+    ship1: 0,
+  };
+
   return {
     isReady: () => shipsCount === REQUIRED_NUMBER_OF_SHIPS,
 
@@ -122,9 +162,18 @@ const createGameBoard = () => {
     // TODO
     placeShipAt(ship, { x = -1, y = -1, isVertical = false } = {}) {
       if (!this.isReady() && isShipValid(ship, board, { x, y, isVertical })) {
-        // place the fucking ship
-        shipsCount += 1;
-        return true;
+        if (isShipRequired(ship)) {
+          const cords = getAllShipCords(ship, { x, y, isVertical });
+
+          shipsData.push({
+            ship,
+            cords,
+          });
+
+          // place the fucking ship
+          shipsCount += 1;
+          return true;
+        }
       }
       return false;
     },
