@@ -123,6 +123,12 @@ const getAllShipCords = (ship, { x, y, isVertical }) => {
   }
 };
 
+const isShipRequired = (ship, boardInfo) => {
+  const shipType = `ship${ship.getLength()}`;
+
+  return boardInfo[shipType] + 1 === REQUIRED_TYPES_OF_SHIPS[shipType];
+};
+
 const createGameBoard = () => {
   const board = [
     ['~', '~', '~', '~', '~', '~', '~', '~', '~', '~'],
@@ -139,14 +145,14 @@ const createGameBoard = () => {
 
   let shipsCount = 0;
   let sunkShips = 0;
-
-  const shipsData = [];
-  const boardInfo = {
+  let boardInfo = {
     ship4: 0,
     ship3: 0,
     ship2: 0,
     ship1: 0,
   };
+
+  const shipsData = [];
 
   return {
     isReady: () => shipsCount === REQUIRED_NUMBER_OF_SHIPS,
@@ -162,7 +168,8 @@ const createGameBoard = () => {
     // TODO
     placeShipAt(ship, { x = -1, y = -1, isVertical = false } = {}) {
       if (!this.isReady() && isShipValid(ship, board, { x, y, isVertical })) {
-        if (isShipRequired(ship)) {
+        if (isShipRequired(ship, boardInfo)) {
+          // boardInfo = updateBoardInfo(ship, boardInfo);
           const cords = getAllShipCords(ship, { x, y, isVertical });
 
           shipsData.push({
