@@ -1,11 +1,6 @@
 import createGameBoard from '../createGameBoard';
 import createShip from '../createShip';
 
-//  '~' - water or an empty spot
-//  'B' - border of ship
-//  's' - ship itself
-//  'x' - missed hi
-
 // valid format for x and y: [0 - 9]
 
 describe('createGameBoard', () => {
