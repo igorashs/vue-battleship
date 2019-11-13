@@ -205,6 +205,10 @@ const putShipOnBoard = (ship, board, { x, y, isVertical }) => {
   return newBoard;
 };
 
+const getRandomCord = () => Math.floor(Math.random() * (MAX_CORD_RANGE + 1));
+
+const getRandomPosition = () => !!Math.floor(Math.random() * 2);
+
 const createGameBoard = () => {
   let board = [
     ['~', '~', '~', '~', '~', '~', '~', '~', '~', '~'],
@@ -256,6 +260,20 @@ const createGameBoard = () => {
         }
       }
       return false;
+    },
+
+    placeShipRandom(ship) {
+      if (!isShipRequired(ship, boardInfo)) return false;
+      let x;
+      let y;
+      let isVertical;
+      do {
+        x = getRandomCord();
+        y = getRandomCord();
+        isVertical = getRandomPosition();
+      } while (!this.placeShipAt(ship, { x, y, isVertical }));
+
+      return true;
     },
 
     receiveAttack({ x, y }) {
