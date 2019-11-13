@@ -30,10 +30,10 @@ describe('player', () => {
     expect(createPlayer({ board: createBoardWithPlacedShips() }).getName()).toBe('Player');
   });
 
-  it('create a pc player with default name = PC', () => {
+  it('create a pc player with default name = PC-Player', () => {
     const pcPlayer = createPlayer({ board: createBoardWithPlacedShips(), isPc: true });
 
-    expect(pcPlayer.getName()).toBe('PC');
+    expect(pcPlayer.getName()).toBe('PC-Player');
   });
 
   it('a player must have a gameBoard with ships', () => {
