@@ -55,7 +55,7 @@ describe('player', () => {
     expect(player1.attack({ player: player2, x: 9, y: 9 }).toBe(false));
   });
 
-  it('return info about ship if its sunk', () => {
+  it('return info about ship if it is sunk', () => {
     const board = createBoardWithPlacedShips();
     const player1 = createPlayer({ board });
     const player2 = createPlayer({ board });
