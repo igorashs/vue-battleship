@@ -291,6 +291,11 @@ const createGameBoard = () => {
           return true;
         }
 
+        if (board[x][y] === '*' || board[x][y] === 'x') {
+          // attack in the same spot
+          return '*';
+        }
+
         board[x][y] = '*';
         return false;
       }
