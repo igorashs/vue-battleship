@@ -306,6 +306,7 @@ const createGameBoard = () => {
 };
 
 export default createGameBoard;
+export { getRandomCord };
 
 //  '~' - water or an empty spot
 //  'B' - border of ship
