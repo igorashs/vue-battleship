@@ -284,10 +284,10 @@ const createGameBoard = () => {
 
           if (hitShipData.ship.hitAt({ position: hitIndex + 1 }).isSunk()) {
             sunkShips += 1;
+            return hitShipData;
           }
 
           board[x][y] = 'x';
-          // ! we can do something with ship if it is sunk thing about it
           return true;
         }
 
