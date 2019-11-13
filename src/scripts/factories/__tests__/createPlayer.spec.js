@@ -1,4 +1,4 @@
-import createPlayer from '../player';
+import createPlayer from '../createPlayer';
 import createShip from '../createShip';
 import createGameBoard from '../createGameBoard';
 
