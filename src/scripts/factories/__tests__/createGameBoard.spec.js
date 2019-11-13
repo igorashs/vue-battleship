@@ -158,7 +158,7 @@ describe('createGameBoard', () => {
     expect(gameBoard.getAliveShipsCount()).toBe(10);
   });
 
-  it('can take hits if board is ready and return true if it was hit | false if it was  missed', () => {
+  it('take hits when is board is ready | return true if it was hit | false if it was  missed | * if twice ', () => {
     const gameBoard = createGameBoard();
 
     expect(gameBoard.placeShipAt(createShip({ length: 4 }), { x: 0, y: 0 })).toBe(true);
@@ -177,7 +177,10 @@ describe('createGameBoard', () => {
 
     expect(gameBoard.placeShipAt(createShip({ length: 1 }), { x: 6, y: 8 })).toBe(true);
 
+    // attack in the same spot
     expect(gameBoard.receiveAttack({ x: 0, y: 0 })).toBe(true);
+    expect(gameBoard.receiveAttack({ x: 0, y: 0 })).toBe('*');
+
     expect(gameBoard.receiveAttack({ x: 9, y: 0 })).toBe(false);
   });
 
