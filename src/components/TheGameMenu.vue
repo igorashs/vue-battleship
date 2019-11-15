@@ -1,7 +1,9 @@
 <template>
   <v-dialog v-model="isOpen" persistent>
     <div class="menu-container">
-      <button class="menu-btn">New Game</button>
+      <button class="menu-btn" @click="$emit('start-new-game')">
+        New Game
+      </button>
       <button class="menu-btn" :class="{ disable: options.resume.isDisabled }">
         Resume
       </button>

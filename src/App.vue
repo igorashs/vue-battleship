@@ -2,7 +2,11 @@
   <v-app>
     <TheNavBar @show-game-menu="handleShowGameMenu" />
     <v-content>
-      <TheGameMenu :isOpen="isGameMenuOpen" :options="gameMenuOptions" />
+      <TheGameMenu
+        :isOpen="isGameMenuOpen"
+        :options="gameMenuOptions"
+        @start-new-game="handleNewGame"
+      />
     </v-content>
   </v-app>
 </template>
@@ -37,8 +41,16 @@ export default {
   }),
 
   methods: {
+    hideGameMenu() {
+      this.isGameMenuOpen = false;
+    },
+
     handleShowGameMenu() {
       this.isGameMenuOpen = true;
+    },
+
+    handleNewGame() {
+      this.hideGameMenu();
     },
   },
 };
