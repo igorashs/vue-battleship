@@ -7,6 +7,7 @@
         :options="gameMenuOptions"
         @start-new-game="handleNewGame"
       />
+      <TheGameBoardRedactor :isOpen="isGameBoardRedactorOpen" />
     </v-content>
   </v-app>
 </template>
@@ -14,6 +15,7 @@
 <script>
 import TheNavBar from './components/TheNavBar.vue';
 import TheGameMenu from './components/TheGameMenu.vue';
+import TheGameBoardRedactor from './components/TheGameBoardRedactor.vue';
 
 export default {
   name: 'App',
@@ -21,10 +23,12 @@ export default {
   components: {
     TheNavBar,
     TheGameMenu,
+    TheGameBoardRedactor,
   },
 
   data: () => ({
     isGameMenuOpen: false, // !default should be true
+    isGameBoardRedactorOpen: false,
     gameMenuOptions: {
       resume: {
         isDisabled: true,
@@ -49,8 +53,13 @@ export default {
       this.isGameMenuOpen = true;
     },
 
+    showGameBoardRedactor() {
+      this.isGameBoardRedactorOpen = true;
+    },
+
     handleNewGame() {
       this.hideGameMenu();
+      this.showGameBoardRedactor();
     },
   },
 };
