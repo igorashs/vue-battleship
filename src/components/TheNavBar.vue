@@ -1,6 +1,6 @@
 <template>
   <nav>
-    <button class="menu" @click="$emit('show-menu')">Menu</button>
+    <button class="menu" @click="$emit('show-game-menu')">Menu</button>
     <h1 class="logo">Battleship</h1>
     <button @click="handleOpenRepo">
       <v-icon large>mdi-github-circle</v-icon>
