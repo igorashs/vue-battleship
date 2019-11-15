@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <TheNavBar />
+    <TheNavBar @show-menu="handleShowMenu" />
     <v-content></v-content>
   </v-app>
 </template>
@@ -18,6 +18,12 @@ export default {
   data: () => ({
     //
   }),
+
+  methods: {
+    handleShowMenu() {
+      console.log('hello there');
+    },
+  },
 };
 </script>
 
