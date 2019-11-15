@@ -20,12 +20,12 @@ export default {
   },
 
   data: () => ({
-    isGameMenuOpen: true,
+    isGameMenuOpen: false, // !default should be false
   }),
 
   methods: {
     handleShowGameMenu() {
-      console.log('hello there');
+      this.isGameMenuOpen = true;
     },
   },
 };
