@@ -2,7 +2,7 @@
   <v-app>
     <TheNavBar @show-game-menu="handleShowGameMenu" />
     <v-content>
-      <TheGameMenu :isOpen="isGameMenuOpen" />
+      <TheGameMenu :isOpen="isGameMenuOpen" :options="gameMenuOptions" />
     </v-content>
   </v-app>
 </template>
@@ -20,7 +20,20 @@ export default {
   },
 
   data: () => ({
-    isGameMenuOpen: false, // !default should be false
+    isGameMenuOpen: false, // !default should be true
+    gameMenuOptions: {
+      resume: {
+        isDisabled: true,
+      },
+
+      save: {
+        isDisabled: true,
+      },
+
+      load: {
+        isDisabled: true,
+      },
+    },
   }),
 
   methods: {

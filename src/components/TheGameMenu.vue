@@ -2,9 +2,15 @@
   <v-dialog v-model="isOpen" persistent>
     <div class="menu-container">
       <button class="menu-btn">New Game</button>
-      <button class="menu-btn">Resume</button>
-      <button class="menu-btn">Save</button>
-      <button class="menu-btn">Load</button>
+      <button class="menu-btn" :class="{ disable: options.resume.isDisabled }">
+        Resume
+      </button>
+      <button class="menu-btn" :class="{ disable: options.save.isDisabled }">
+        Save
+      </button>
+      <button class="menu-btn" :class="{ disable: options.load.isDisabled }">
+        Load
+      </button>
     </div>
   </v-dialog>
 </template>
@@ -13,6 +19,7 @@
 export default {
   props: {
     isOpen: Boolean,
+    options: Object,
   },
 };
 </script>
@@ -37,5 +44,10 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.disable {
+  pointer-events: none;
+  color: rgb(117, 117, 117);
 }
 </style>
