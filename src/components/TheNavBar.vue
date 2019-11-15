@@ -1,7 +1,8 @@
 <template>
   <nav>
+    <button class="menu" @click="$emit('show-menu')">Menu</button>
     <h1 class="logo">Battleship</h1>
-    <button @click="handleClick">
+    <button @click="handleOpenRepo">
       <v-icon large>mdi-github-circle</v-icon>
     </button>
   </nav>
@@ -10,7 +11,7 @@
 <script>
 export default {
   methods: {
-    handleClick() {
+    handleOpenRepo() {
       window.open('https://github.com/igorashs/vue-battleship', '_blank');
     },
   },
@@ -41,19 +42,28 @@ nav button {
   cursor: pointer;
   border-radius: 50%;
   background-color: rgba(29, 25, 32, 0.5);
-  box-shadow: 0 0px 5px 1px rgb(29, 25, 32);
+  box-shadow: inset 0 0px 5px 1px rgb(29, 25, 32);
+  border: 2px solid rgba(24, 0, 37, 0.192);
   outline: none;
 }
 
 nav button:hover,
 nav button:focus {
-  box-shadow: 0 0px 5px 1px rgb(98, 0, 255);
-  animation: pulse 750ms infinite;
+  box-shadow: 0 0px 5px 1px rgb(29, 25, 32);
+  animation: pulse 1s infinite alternate;
+}
+
+.menu {
+  font-family: bfont;
+  width: auto;
+  height: auto;
+  border-radius: 2px;
+  padding: 0 0.5rem;
+  font-size: 2rem;
 }
 
 @keyframes pulse {
   100% {
-    transform: scale(1.2);
     box-shadow: 0 0px 5px 1px rgb(0, 255, 213);
   }
 }
