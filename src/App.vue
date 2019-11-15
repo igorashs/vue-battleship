@@ -2,23 +2,25 @@
   <v-app>
     <TheNavBar @show-game-menu="handleShowGameMenu" />
     <v-content>
-      <!-- <v-dialog v-model=""></v-dialog> -->
+      <TheGameMenu :isOpen="isGameMenuOpen" />
     </v-content>
   </v-app>
 </template>
 
 <script>
 import TheNavBar from './components/TheNavBar.vue';
+import TheGameMenu from './components/TheGameMenu.vue';
 
 export default {
   name: 'App',
 
   components: {
     TheNavBar,
+    TheGameMenu,
   },
 
   data: () => ({
-    //
+    isGameMenuOpen: true,
   }),
 
   methods: {
