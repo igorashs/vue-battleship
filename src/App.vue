@@ -1,7 +1,9 @@
 <template>
   <v-app>
-    <TheNavBar @show-menu="handleShowMenu" />
-    <v-content></v-content>
+    <TheNavBar @show-game-menu="handleShowGameMenu" />
+    <v-content>
+      <!-- <v-dialog v-model=""></v-dialog> -->
+    </v-content>
   </v-app>
 </template>
 
@@ -20,7 +22,7 @@ export default {
   }),
 
   methods: {
-    handleShowMenu() {
+    handleShowGameMenu() {
       console.log('hello there');
     },
   },
