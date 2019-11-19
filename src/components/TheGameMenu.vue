@@ -28,9 +28,8 @@ export default {
 
 <style scoped>
 .menu-btn {
-  width: 20rem;
   margin: 2rem;
-  font-size: 2rem;
+  font-size: 3.2rem;
   font-family: bfont;
   outline: none;
   text-shadow: 0 2px 2px black;

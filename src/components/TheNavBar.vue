@@ -30,14 +30,14 @@ nav {
 nav h1 {
   text-align: center;
   font-family: bfont;
-  font-size: 4rem;
+  font-size: 4.8rem;
   text-shadow: 0 2px 2px black;
   flex: 1;
 }
 
 nav button {
-  width: 4rem;
-  height: 4rem;
+  width: 6rem;
+  height: 6rem;
   margin: 0 1rem;
   cursor: pointer;
   border-radius: 50%;
@@ -59,7 +59,7 @@ nav button:focus {
   height: auto;
   border-radius: 2px;
   padding: 0 0.5rem;
-  font-size: 2rem;
+  font-size: 3.2rem;
 }
 
 @keyframes pulse {
