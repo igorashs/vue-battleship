@@ -3,7 +3,14 @@
     <div class="container">
       <h2>Arrange your board</h2>
       <div class="redactor">
-        <div class="board"></div>
+        <div class="board">
+          <div
+            class="spot"
+            v-for="(_, i) in Math.pow(MAX + 1, 2)"
+            :key="keys[MIN + i]"
+            :data-cord="stringifiedCords[MIN + i]"
+          ></div>
+        </div>
         <div class="ships-selection"></div>
       </div>
       <div class="options">
@@ -18,7 +25,22 @@
 export default {
   props: {
     isOpen: Boolean,
+    cords: Array,
+    MAX: Number,
+    MIN: Number,
   },
+
+  computed: {
+    keys() {
+      return this.cords.map((c, i) => `${JSON.stringify(c)}-${i}`);
+    },
+
+    stringifiedCords() {
+      return this.cords.map((c) => JSON.stringify(c));
+    },
+  },
+
+  methods: {},
 };
 </script>
 
@@ -47,5 +69,18 @@ export default {
 .options button:hover,
 .options button:focus {
   color: rgb(128, 255, 0);
+}
+
+.board {
+  --spot-size: 32px;
+  display: grid;
+  grid-template-columns: repeat(10, var(--spot-size));
+  grid-gap: 2px;
+}
+
+.board .spot {
+  width: var(--spot-size);
+  height: var(--spot-size);
+  background-color: blueviolet;
 }
 </style>
