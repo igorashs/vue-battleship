@@ -25,6 +25,13 @@
         </div>
         <div class="ships-selection"></div>
       </div>
+      <div class="tips-container">
+        <v-icon class="tip-ico">mdi-lightbulb-on</v-icon>
+        <div class="tips">
+          <span>* Drag and drop the ships</span>
+          <span>* Click to switch direction</span>
+        </div>
+      </div>
       <div class="options">
         <button>Random</button>
         <button>Next</button>
@@ -153,5 +160,37 @@ export default {
   width: var(--spot-size);
   height: var(--spot-size);
   background-color: rgb(35, 137, 218);
+}
+
+.tips-container {
+  justify-content: center;
+  align-items: center;
+  margin: 2rem 0;
+  font-size: 1.6rem;
+  text-shadow: 0 2px 2px black;
+  display: flex;
+}
+
+.tips {
+  margin-left: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.tip-ico {
+  font-size: 36px;
+  color: rgb(255, 255, 0);
+  animation: pulse 250ms 3s 12 alternate;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+@keyframes pulse {
+  100% {
+    transform: scale(1.2);
+    color: rgb(200, 48, 48);
+    box-shadow: inset 0 0 10px 2px rgb(255, 255, 0),
+      0 0 10px 2px rgb(255, 255, 0);
+  }
 }
 </style>
