@@ -28,7 +28,7 @@ nav {
 }
 
 nav h1 {
-  text-align: center;
+  text-align: left;
   font-family: bfont;
   font-size: 4.8rem;
   text-shadow: 0 2px 2px black;
