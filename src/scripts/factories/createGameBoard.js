@@ -7,8 +7,9 @@ const REQUIRED_TYPES_OF_SHIPS = {
 };
 const MAX_CORD_RANGE = 9;
 const MIN_CORD_RANGE = 0;
-// const receiveAttack = ({ x, y }) => {};
-// const placeShipRandom = (ship) => {};
+
+export { MAX_CORD_RANGE };
+export { MIN_CORD_RANGE };
 
 const isCordsValid = ({ x, y }) => {
   const isCordBetweenRange = (cord) => MIN_CORD_RANGE <= cord && cord <= MAX_CORD_RANGE;
