@@ -39,7 +39,7 @@ export default {
   data: () => ({
     MAX_RANGE,
     MIN_RANGE,
-    isGameMenuOpen: false, // !default should be true
+    isGameMenuOpen: true,
     isGameBoardRedactorOpen: false,
     gameMenuOptions: {
       resume: {
