@@ -34,6 +34,7 @@ export default {
   font-family: bfont;
   outline: none;
   text-shadow: 0 2px 2px black;
+  text-align: center;
 }
 
 .menu-btn:hover,
