@@ -23,13 +23,15 @@
             ></div>
           </div>
         </div>
-        <div class="ships-selection"></div>
+        <div class="ships-selection">
+
+        </div>
       </div>
       <div class="tips-container">
         <v-icon class="tip-ico">mdi-lightbulb-on</v-icon>
         <div class="tips">
           <span>* Drag and drop the ships</span>
-          <span>* Click to switch direction</span>
+          <span>* Click on a ship on the board to switch direction</span>
         </div>
       </div>
       <div class="options">
