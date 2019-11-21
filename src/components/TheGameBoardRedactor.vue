@@ -5,14 +5,10 @@
       <div class="redactor">
         <div class="board-container">
           <div class="cords letters">
-            <div class="letter" v-for="l in lettersCords" :key="l">
-              {{ l }}
-            </div>
+            <div class="letter" v-for="l in lettersCords" :key="l">{{ l }}</div>
           </div>
           <div class="cords numbers">
-            <div class="number" v-for="n in numbersCords" :key="n">
-              {{ n }}
-            </div>
+            <div class="number" v-for="n in numbersCords" :key="n">{{ n }}</div>
           </div>
           <div class="board">
             <div
@@ -23,8 +19,13 @@
             ></div>
           </div>
         </div>
-        <div class="ships-selection">
-
+        <div class="selection">
+          <div class="ship-container" v-for="(count, ship) in ships" :key="ship">
+            <span class="count">{{ count }}x</span>
+            <div class="ship" :data-length="getShipLength(ship)" data-position="y" draggable="true">
+              <div class="part" v-for="i in getShipLength(ship)" :key="i"></div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="tips-container">
@@ -43,15 +44,37 @@
 </template>
 
 <script>
+import createNewBoard, {
+  MAX_CORD_RANGE,
+  MIN_CORD_RANGE,
+  REQUIRED_TYPES_OF_SHIPS,
+} from '../scripts/factories/createGameBoard';
+
 export default {
   props: {
     isOpen: Boolean,
-    cords: Array,
-    MAX: Number,
-    MIN: Number,
+  },
+
+  data() {
+    return {
+      MAX: MAX_CORD_RANGE,
+      MIN: MIN_CORD_RANGE,
+      ships: { ...REQUIRED_TYPES_OF_SHIPS },
+      board: createNewBoard(),
+    };
   },
 
   computed: {
+    cords() {
+      const cords = [];
+      for (let i = this.MIN; i <= this.MAX; i += 1) {
+        for (let j = this.MIN; j <= this.MAX; j += 1) {
+          cords.push({ x: j, y: i });
+        }
+      }
+      return cords;
+    },
+
     keys() {
       return this.cords.map((c, i) => `${JSON.stringify(c)}-${i}`);
     },
@@ -81,7 +104,11 @@ export default {
     },
   },
 
-  methods: {},
+  methods: {
+    getShipLength(ship) {
+      return +ship.match(/\d/g).join('');
+    },
+  },
 };
 </script>
 
@@ -115,8 +142,9 @@ export default {
 }
 
 .redactor {
-  display: flex;
   --spot-size: 4rem;
+  display: flex;
+  justify-content: space-evenly;
 }
 
 .cords {
@@ -153,8 +181,8 @@ export default {
 .board {
   display: grid;
   grid-template-columns: repeat(10, var(--spot-size));
-  grid-gap: 2px;
-  border: 2px solid rgb(0, 44, 102);
+  grid-gap: 4px;
+  border: 4px solid rgb(0, 44, 102);
   background-color: rgb(0, 44, 102);
 }
 
@@ -194,5 +222,36 @@ export default {
     box-shadow: inset 0 0 10px 2px rgb(255, 255, 0),
       0 0 10px 2px rgb(255, 255, 0);
   }
+}
+
+.selection {
+  padding: 10rem 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.ship-container {
+  display: flex;
+  align-items: center;
+}
+
+.count {
+  font-size: 2.6rem;
+  width: 5rem;
+}
+
+.ship {
+  display: grid;
+  grid-auto-flow: column;
+  background-color: rgb(128, 128, 128);
+  grid-gap: 4px;
+  border: 4px solid rgb(70, 70, 70);
+}
+
+.part {
+  width: var(--spot-size);
+  height: var(--spot-size);
+  background-color: grey;
 }
 </style>
