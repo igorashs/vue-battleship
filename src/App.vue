@@ -7,12 +7,7 @@
         :options="gameMenuOptions"
         @start-new-game="handleNewGame"
       />
-      <TheGameBoardRedactor
-        :isOpen="isGameBoardRedactorOpen"
-        :MAX="MAX_RANGE"
-        :MIN="MIN_RANGE"
-        :cords="cords"
-      />
+      <TheGameBoardRedactor :isOpen="isGameBoardRedactorOpen" />
     </v-content>
   </v-app>
 </template>
@@ -21,11 +16,6 @@
 import TheNavBar from './components/TheNavBar.vue';
 import TheGameMenu from './components/TheGameMenu.vue';
 import TheGameBoardRedactor from './components/TheGameBoardRedactor.vue';
-
-import {
-  MAX_CORD_RANGE as MAX_RANGE,
-  MIN_CORD_RANGE as MIN_RANGE,
-} from './scripts/factories/createGameBoard';
 
 export default {
   name: 'App',
@@ -37,8 +27,6 @@ export default {
   },
 
   data: () => ({
-    MAX_RANGE,
-    MIN_RANGE,
     isGameMenuOpen: true,
     isGameBoardRedactorOpen: false,
     gameMenuOptions: {
@@ -55,18 +43,6 @@ export default {
       },
     },
   }),
-
-  computed: {
-    cords() {
-      const cords = [];
-      for (let i = this.MIN_RANGE; i <= this.MAX_RANGE; i += 1) {
-        for (let j = this.MIN_RANGE; j <= this.MAX_RANGE; j += 1) {
-          cords.push({ x: j, y: i });
-        }
-      }
-      return cords;
-    },
-  },
 
   methods: {
     hideGameMenu() {
