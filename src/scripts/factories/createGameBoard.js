@@ -8,6 +8,7 @@ const REQUIRED_TYPES_OF_SHIPS = {
 const MAX_CORD_RANGE = 9;
 const MIN_CORD_RANGE = 0;
 
+export { REQUIRED_TYPES_OF_SHIPS };
 export { MAX_CORD_RANGE };
 export { MIN_CORD_RANGE };
 
