@@ -279,7 +279,6 @@ export default {
   grid-auto-flow: column;
   background-color: rgb(128, 128, 128);
   grid-gap: 4px;
-  border: 4px solid rgb(70, 70, 70);
   cursor: move;
 }
 
@@ -287,6 +286,7 @@ export default {
   width: var(--spot-size);
   height: var(--spot-size);
   background-color: grey;
+  border: 4px solid rgb(70, 70, 70);
 }
 
 </style>
