@@ -151,6 +151,12 @@ export default {
         const ship = this.$refs[shipType][0].cloneNode(true);
         this.ships[shipType] -= 1;
 
+        ship.addEventListener('click', () => {
+          const pos = ship.dataset.position;
+          ship.dataset.position = pos === 'x' ? 'y' : 'x';
+          ship.style['grid-auto-flow'] = pos === 'x' ? 'column' : 'row';
+        });
+
         ship.setAttribute('draggable', 'false');
         ship.style.position = 'absolute';
         ship.style.cursor = 'pointer';
@@ -239,6 +245,7 @@ export default {
   width: var(--spot-size);
   height: var(--spot-size);
   background-color: rgb(35, 137, 218);
+  position: relative;
 }
 
 .over {
@@ -294,14 +301,13 @@ export default {
   width: 5rem;
 }
 
-/* for no drop|
- cursor: no-drop */
 .ship {
   display: grid;
   grid-auto-flow: column;
   background-color: rgb(128, 128, 128);
   grid-gap: 4px;
   cursor: move;
+  z-index: 69;
 }
 
 .part {
