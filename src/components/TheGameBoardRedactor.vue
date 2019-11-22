@@ -16,11 +16,19 @@
               v-for="(_, i) in Math.pow(MAX + 1, 2)"
               :key="keys[MIN + i]"
               :data-cord="stringifiedCords[MIN + i]"
+              @dragover.prevent="handleDragOver"
+              @dragleave="handleDragLeave"
+              @drop="handleDrop"
             ></div>
           </div>
         </div>
         <div class="selection">
-          <div class="ship-container" v-for="(count, ship) in ships" :key="ship">
+          <div
+            class="ship-container"
+            v-for="(count, ship) in ships"
+            :key="ship"
+            @dragstart="handleDragStart"
+          >
             <span class="count">{{ count }}x</span>
             <div class="ship" :data-length="getShipLength(ship)" data-position="y" draggable="true">
               <div class="part" v-for="i in getShipLength(ship)" :key="i"></div>
@@ -86,7 +94,7 @@ export default {
     lettersCords() {
       const cords = [];
 
-      for (let i = this.MIN; i <= this.MAX + 1; i += 1) {
+      for (let i = this.MIN; i <= this.MAX; i += 1) {
         cords.push(String.fromCharCode(65 + i));
       }
 
@@ -107,6 +115,25 @@ export default {
   methods: {
     getShipLength(ship) {
       return +ship.match(/\d/g).join('');
+    },
+
+    handleDragStart(e) {
+      const { length, position } = e.target.dataset;
+      e.dataTransfer.setData('text/plain', JSON.stringify({ length, position }));
+    },
+
+    handleDragOver(e) {
+      e.target.classList.add('over');
+    },
+
+    handleDragLeave(e) {
+      e.target.classList.remove('over');
+    },
+
+    handleDrop(e) {
+      e.target.classList.remove('over');
+      const { length, position } = JSON.parse(e.dataTransfer.getData('text/plain'));
+      console.log(length, position);
     },
   },
 };
@@ -186,10 +213,14 @@ export default {
   background-color: rgb(0, 44, 102);
 }
 
-.board .spot {
+.spot {
   width: var(--spot-size);
   height: var(--spot-size);
   background-color: rgb(35, 137, 218);
+}
+
+.over {
+  background-color: rgb(0, 74, 134);
 }
 
 .tips-container {
@@ -241,12 +272,15 @@ export default {
   width: 5rem;
 }
 
+/* for no drop|
+ cursor: no-drop */
 .ship {
   display: grid;
   grid-auto-flow: column;
   background-color: rgb(128, 128, 128);
   grid-gap: 4px;
   border: 4px solid rgb(70, 70, 70);
+  cursor: move;
 }
 
 .part {
@@ -254,4 +288,5 @@ export default {
   height: var(--spot-size);
   background-color: grey;
 }
+
 </style>
