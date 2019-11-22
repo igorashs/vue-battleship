@@ -142,25 +142,37 @@ export default {
     handleDrop(e) {
       e.target.classList.remove('over');
 
-      const { length, position } = JSON.parse(e.dataTransfer.getData('text/plain'));
-      const cord = JSON.parse(e.target.dataset.cord);
-      const isVertical = position === 'x';
+      let isDataValid;
+      let data;
 
-      if (this.board.placeShipAt(createShip({ length }), { ...cord, isVertical })) {
-        const shipType = `ship${length}`;
-        const ship = this.$refs[shipType][0].cloneNode(true);
-        this.ships[shipType] -= 1;
+      try {
+        data = JSON.parse(e.dataTransfer.getData('text/plain'));
+        isDataValid = true;
+      } catch {
+        isDataValid = false;
+      }
 
-        ship.addEventListener('click', () => {
-          const pos = ship.dataset.position;
-          ship.dataset.position = pos === 'x' ? 'y' : 'x';
-          ship.style['grid-auto-flow'] = pos === 'x' ? 'column' : 'row';
-        });
+      if (isDataValid && data) {
+        const { length, position } = data;
+        const cord = JSON.parse(e.target.dataset.cord);
+        const isVertical = position === 'x';
 
-        ship.setAttribute('draggable', 'false');
-        ship.style.position = 'absolute';
-        ship.style.cursor = 'pointer';
-        e.target.appendChild(ship);
+        if (this.board.placeShipAt(createShip({ length }), { ...cord, isVertical })) {
+          const shipType = `ship${length}`;
+          const ship = this.$refs[shipType][0].cloneNode(true);
+          this.ships[shipType] -= 1;
+
+          ship.addEventListener('click', () => {
+            const pos = ship.dataset.position;
+            ship.dataset.position = pos === 'x' ? 'y' : 'x';
+            ship.style['grid-auto-flow'] = pos === 'x' ? 'column' : 'row';
+          });
+
+          ship.setAttribute('draggable', 'false');
+          ship.style.position = 'absolute';
+          ship.style.cursor = 'pointer';
+          e.target.appendChild(ship);
+        }
       }
     },
   },
