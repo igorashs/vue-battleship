@@ -30,7 +30,13 @@
             @dragstart="handleDragStart"
           >
             <span class="count">{{ count }}x</span>
-            <div class="ship" :data-length="getShipLength(ship)" data-position="y" draggable="true">
+            <div
+              class="ship"
+              :data-length="getShipLength(ship)"
+              data-position="y"
+              draggable="true"
+             :ref="ship"
+            >
               <div class="part" v-for="i in getShipLength(ship)" :key="i"></div>
             </div>
           </div>
@@ -57,6 +63,8 @@ import createNewBoard, {
   MIN_CORD_RANGE,
   REQUIRED_TYPES_OF_SHIPS,
 } from '../scripts/factories/createGameBoard';
+
+import createShip from '../scripts/factories/createShip';
 
 export default {
   props: {
@@ -118,7 +126,8 @@ export default {
     },
 
     handleDragStart(e) {
-      const { length, position } = e.target.dataset;
+      const { position } = e.target.dataset;
+      const length = +e.target.dataset.length;
       e.dataTransfer.setData('text/plain', JSON.stringify({ length, position }));
     },
 
@@ -132,8 +141,18 @@ export default {
 
     handleDrop(e) {
       e.target.classList.remove('over');
+
       const { length, position } = JSON.parse(e.dataTransfer.getData('text/plain'));
-      console.log(length, position);
+      const cord = JSON.parse(e.target.dataset.cord);
+      const isVertical = position === 'x';
+
+      if (this.board.placeShipAt(createShip({ length }), { ...cord, isVertical })) {
+        const ship = this.$refs[`ship${length}`][0].cloneNode(true);
+        ship.setAttribute('draggable', 'false');
+        ship.style.position = 'absolute';
+        ship.style.cursor = 'pointer';
+        e.target.appendChild(ship);
+      }
     },
   },
 };
