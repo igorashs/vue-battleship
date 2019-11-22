@@ -147,7 +147,10 @@ export default {
       const isVertical = position === 'x';
 
       if (this.board.placeShipAt(createShip({ length }), { ...cord, isVertical })) {
-        const ship = this.$refs[`ship${length}`][0].cloneNode(true);
+        const shipType = `ship${length}`;
+        const ship = this.$refs[shipType][0].cloneNode(true);
+        this.ships[shipType] -= 1;
+
         ship.setAttribute('draggable', 'false');
         ship.style.position = 'absolute';
         ship.style.cursor = 'pointer';
