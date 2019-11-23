@@ -211,6 +211,11 @@ const getRandomCord = () => Math.floor(Math.random() * (MAX_CORD_RANGE + 1));
 
 const getRandomPosition = () => !!Math.floor(Math.random() * 2);
 
+const findDamagedShipData = (shipsData, { x, y }) => (
+  shipsData.find((s) => s.cords.find((c) => c.x === x && c.y === y)));
+
+const getDamagedPosition = (ship, { x, y }) => ship.cords.findIndex((c) => c.x === x && c.y === y);
+
 const createGameBoard = () => {
   let board = [
     ['~', '~', '~', '~', '~', '~', '~', '~', '~', '~'],
@@ -281,12 +286,12 @@ const createGameBoard = () => {
     receiveAttack({ x, y }) {
       if (this.isReady() && isCordsValid({ x, y })) {
         if (board[x][y] === 's') {
-          const hitShipData = shipsData.find((sd) => sd.cords.find((c) => c.x === x && c.y === y));
-          const hitIndex = hitShipData.cords.findIndex((c) => c.x === x && c.y === y);
+          const damagedShipData = findDamagedShipData(shipsData, { x, y });
+          const damagedPosition = getDamagedPosition(damagedShipData, { x, y });
 
-          if (hitShipData.ship.hitAt({ position: hitIndex + 1 }).isSunk()) {
+          if (damagedShipData.ship.hitAt({ position: damagedPosition + 1 }).isSunk()) {
             sunkShips += 1;
-            return hitShipData;
+            return damagedShipData;
           }
 
           board[x][y] = 'x';
