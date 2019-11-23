@@ -19,6 +19,7 @@ const isCordsValid = ({ x, y }) => {
     if (!Number.isNaN(cord) && typeof cord === 'number') {
       return isCordBetweenRange(cord);
     }
+
     return false;
   };
 
@@ -34,27 +35,32 @@ const isShipPlaceable = (start, end, board, isVertical) => {
         return false;
       }
     }
+
     // check the left side
     for (let i = start.y - 1; i <= end.y + 1; i += 1) {
       if (isCordsValid({ x: start.x - 1, y: i }) && board[start.x - 1][i] === 's') {
         return false;
       }
     }
+
     // check the right side
     for (let i = start.y - 1; i <= end.y + 1; i += 1) {
       if (isCordsValid({ x: start.x + 1, y: i }) && board[start.x + 1][i] === 's') {
         return false;
       }
     }
+
     // check the top side
     if (isCordsValid({ x: start.x, y: start.y - 1 }) && board[start.x][start.y - 1] === 's') {
       return false;
     }
+
     // check the bottom side
     if (isCordsValid({ x: start.x, y: end.y + 1 }) && board[start.x][end.y + 1] === 's') {
       return false;
     }
-    // if its all good
+
+    // if all is good
     return true;
   }
 
@@ -65,27 +71,32 @@ const isShipPlaceable = (start, end, board, isVertical) => {
       return false;
     }
   }
+
   // check the top side
   for (let i = start.x - 1; i <= end.x + 1; i += 1) {
     if (isCordsValid({ x: i, y: start.y - 1 }) && board[i][start.y - 1] === 's') {
       return false;
     }
   }
+
   // check the bottom side
   for (let i = start.x + 1; i <= end.x + 1; i += 1) {
     if (isCordsValid({ x: i, y: start.y + 1 }) && board[i][start.y + 1] === 's') {
       return false;
     }
   }
+
   // check the left side
   if (isCordsValid({ x: start.x - 1, y: start.y }) && board[start.x - 1][start.y] === 's') {
     return false;
   }
+
   // check the right side
   if (isCordsValid({ x: start.x + 1, y: start.y }) && board[start.x + 1][start.y] === 's') {
     return false;
   }
-  // if its all good
+
+  // if all is good
   return true;
 };
 
@@ -152,22 +163,26 @@ const putShipOnBoard = (ship, board, { x, y, isVertical }) => {
     for (let i = startPoint.y; i <= endPoint.y; i += 1) {
       newBoard[startPoint.x][i] = 's';
     }
+
     // place the left border
     for (let i = startPoint.y - 1; i <= endPoint.y + 1; i += 1) {
       if (isCordsValid({ x: startPoint.x - 1, y: i })) {
         newBoard[startPoint.x - 1][i] = 'B';
       }
     }
+
     // place the right border
     for (let i = startPoint.y - 1; i <= endPoint.y + 1; i += 1) {
       if (isCordsValid({ x: startPoint.x + 1, y: i })) {
         newBoard[startPoint.x + 1][i] = 'B';
       }
     }
+
     // place the top border
     if (isCordsValid({ x: startPoint.x, y: startPoint.y - 1 })) {
       newBoard[startPoint.x][startPoint.y - 1] = 'B';
     }
+
     // place the bottom border
     if (isCordsValid({ x: startPoint.x, y: endPoint.y + 1 })) {
       newBoard[startPoint.x][endPoint.y + 1] = 'B';
@@ -183,22 +198,26 @@ const putShipOnBoard = (ship, board, { x, y, isVertical }) => {
   for (let i = startPoint.x; i <= endPoint.x; i += 1) {
     newBoard[i][startPoint.y] = 's';
   }
+
   // place the top border
   for (let i = startPoint.x - 1; i <= endPoint.x + 1; i += 1) {
     if (isCordsValid({ x: i, y: startPoint.y - 1 })) {
       newBoard[i][startPoint.y - 1] = 'B';
     }
   }
+
   // place the bottom border
   for (let i = startPoint.x - 1; i <= endPoint.x + 1; i += 1) {
     if (isCordsValid({ x: i, y: startPoint.y + 1 })) {
       newBoard[i][startPoint.y + 1] = 'B';
     }
   }
+
   // place the left border
   if (isCordsValid({ x: startPoint.x - 1, y: startPoint.y })) {
     newBoard[startPoint.x - 1][startPoint.y] = 'B';
   }
+
   // place the right border
   if (isCordsValid({ x: endPoint.x + 1, y: startPoint.y })) {
     newBoard[endPoint.x + 1][startPoint.y] = 'B';
@@ -237,7 +256,6 @@ const createGameBoard = () => {
     ship2: 0,
     ship1: 0,
   };
-
   const shipsData = [];
 
   return {
@@ -266,6 +284,7 @@ const createGameBoard = () => {
           return true;
         }
       }
+
       return false;
     },
 
@@ -274,6 +293,7 @@ const createGameBoard = () => {
       let x;
       let y;
       let isVertical;
+
       do {
         x = getRandomCord();
         y = getRandomCord();
@@ -291,6 +311,7 @@ const createGameBoard = () => {
 
           if (damagedShipData.ship.hitAt({ position: damagedPosition + 1 }).isSunk()) {
             sunkShips += 1;
+
             return damagedShipData;
           }
 
@@ -298,11 +319,10 @@ const createGameBoard = () => {
           return true;
         }
 
-        if (board[x][y] === '*' || board[x][y] === 'x') {
-          // attack in the same spot
-          return '*';
-        }
+        // attack in the same spot
+        if (board[x][y] === '*' || board[x][y] === 'x') return '*';
 
+        // missed
         board[x][y] = '*';
         return false;
       }
