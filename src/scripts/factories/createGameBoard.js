@@ -226,6 +226,8 @@ const putShipOnBoard = (ship, board, { x, y, isVertical }) => {
   return newBoard;
 };
 
+const removeShipFromBoard = (ship, board, { x, y, isVertical }) => {};
+
 const getRandomCord = () => Math.floor(Math.random() * (MAX_CORD_RANGE + 1));
 
 const getRandomPosition = () => !!Math.floor(Math.random() * 2);
@@ -248,6 +250,7 @@ const createGameBoard = () => {
     ['~', '~', '~', '~', '~', '~', '~', '~', '~', '~'],
     ['~', '~', '~', '~', '~', '~', '~', '~', '~', '~'],
   ];
+  let boardReady = false;
   let shipsCount = 0;
   let sunkShips = 0;
   let boardInfo = {
@@ -259,7 +262,15 @@ const createGameBoard = () => {
   const shipsData = [];
 
   return {
-    isReady: () => shipsCount === REQUIRED_NUMBER_OF_SHIPS,
+    isReady: () => shipsCount === REQUIRED_NUMBER_OF_SHIPS && boardReady,
+
+    setBoardToReady() {
+      if (shipsCount === REQUIRED_NUMBER_OF_SHIPS) {
+        boardReady = true;
+      }
+
+      return this;
+    },
 
     isAllShipsSunk() {
       if (this.isReady()) return shipsCount === sunkShips;
