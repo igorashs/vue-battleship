@@ -77,6 +77,7 @@ export default {
       MIN: MIN_CORD_RANGE,
       ships: { ...REQUIRED_TYPES_OF_SHIPS },
       board: createNewBoard(),
+      draggedShip: null,
     };
   },
 
@@ -125,6 +126,29 @@ export default {
       return +ship.match(/\d/g).join('');
     },
 
+    handleChangePosition(e) {
+      const ship = e.currentTarget;
+      const cord = JSON.parse(ship.dataset.cord);
+      const isVertical = ship.dataset.position === 'x';
+
+      if (this.board.replaceShipFrom(
+        { cx: cord.x, cy: cord.y },
+        { nx: cord.x, ny: cord.y, isVertical: !isVertical },
+      )) {
+        const pos = ship.dataset.position === 'x' ? 'y' : 'x';
+        ship.dataset.position = pos;
+        ship.style['grid-auto-flow'] = pos === 'x' ? 'row' : 'column';
+      }
+    },
+
+    handleShipInitialCord(e) {
+      const cord = JSON.parse(e.currentTarget.dataset.cord);
+      const { position } = e.currentTarget.dataset;
+      e.dataTransfer.setData('text/plain', JSON.stringify({ cord, cloned: true, position }));
+      console.log(e.currentTarget.parrentElement);
+      this.draggedShip = e.currentTarget;
+    },
+
     handleDragStart(e) {
       const { position } = e.target.dataset;
       const length = +e.target.dataset.length;
@@ -153,25 +177,38 @@ export default {
       }
 
       if (isDataValid && data) {
-        const { length, position } = data;
-        const cord = JSON.parse(e.target.dataset.cord);
-        const isVertical = position === 'x';
+        if (data.cloned) {
+          const newCord = JSON.parse(e.target.dataset.cord);
+          const { cord, position } = data;
+          const isVertical = position === 'x';
 
-        if (this.board.placeShipAt(createShip({ length }), { ...cord, isVertical })) {
-          const shipType = `ship${length}`;
-          const ship = this.$refs[shipType][0].cloneNode(true);
-          this.ships[shipType] -= 1;
+          if (this.board.replaceShipFrom(
+            { cx: cord.x, cy: cord.y },
+            { nx: newCord.x, ny: newCord.y, isVertical },
+          )) {
+            this.draggedShip.dataset.cord = e.target.dataset.cord;
+            e.target.appendChild(this.draggedShip);
+            this.draggedShip = null;
+          }
+        } else {
+          const { length, position } = data;
+          const cord = JSON.parse(e.target.dataset.cord);
+          const isVertical = position === 'x';
 
-          ship.addEventListener('click', () => {
-            const pos = ship.dataset.position;
-            ship.dataset.position = pos === 'x' ? 'y' : 'x';
-            ship.style['grid-auto-flow'] = pos === 'x' ? 'column' : 'row';
-          });
+          if (this.board.placeShipAt(createShip({ length }), { ...cord, isVertical })) {
+            const shipType = `ship${length}`;
+            const ship = this.$refs[shipType][0].cloneNode(true);
+            ship.dataset.cord = e.target.dataset.cord;
+            ship.dataset.position = position;
 
-          ship.setAttribute('draggable', 'false');
-          ship.style.position = 'absolute';
-          ship.style.cursor = 'pointer';
-          e.target.appendChild(ship);
+            this.ships[shipType] -= 1;
+
+            ship.style.position = 'absolute';
+            e.target.appendChild(ship);
+
+            ship.addEventListener('dragstart', this.handleShipInitialCord);
+            ship.addEventListener('click', this.handleChangePosition);
+          }
         }
       }
     },
