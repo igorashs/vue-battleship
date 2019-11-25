@@ -239,4 +239,24 @@ describe('createGameBoard', () => {
     expect(gameBoard.isAllShipsSunk()).toBe(true);
     expect(gameBoard.getAliveShipsCount()).toBe(0);
   });
+
+  it('replace the ship from a spot to a new valid spot', () => {
+    const board = createGameBoard();
+
+    expect(board.placeShipAt(createShip({ length: 4 }), { x: 0, y: 0 })).toBe(true);
+    expect(board.replaceShipFrom({ cx: 0, cy: 0 }, { nx: 0, ny: 1 })).toBe(true);
+    expect(board.replaceShipFrom({ cx: 0, cy: 1 }, { nx: 0, ny: 2 })).toBe(true);
+
+    expect(board.placeShipAt(createShip({ length: 3 }), { x: 0, y: 0 })).toBe(true);
+    expect(board.replaceShipFrom({ cx: 0, cy: 1 }, { nx: 0, ny: 0 })).toBe(false);
+  });
+
+  it('default isVertical = false for the new spot', () => {
+    const board = createGameBoard();
+
+    expect(board.placeShipAt(createShip({ length: 4 }), { x: 0, y: 0 })).toBe(true);
+
+    expect(board.replaceShipFrom({ cx: 0, cy: 2 }, { nx: 0, ny: 0, isVertical: true })).toBe(true);
+    expect(board.replaceShipFrom({ cx: 2, cy: 0 }, { nx: 0, ny: 0 })).toBe(true);
+  });
 });
