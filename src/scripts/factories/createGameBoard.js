@@ -100,7 +100,7 @@ const isShipPlaceable = (start, end, board, isVertical) => {
   return true;
 };
 
-const isShipValid = (ship, [...board], { x, y, isVertical }) => {
+const isShipValid = (ship, board, { x, y, isVertical }) => {
   if (ship && isCordsValid({ x, y })) {
     const startPoint = { x, y };
     const endPoint = isVertical
@@ -160,7 +160,7 @@ const removeShipFromBoardInfo = (ship, boardInfo) => {
 
 const putShipOnBoard = (ship, board, { x, y, isVertical }) => {
   const startPoint = { x, y };
-  const newBoard = [...board];
+  const newBoard = JSON.parse(JSON.stringify(board));
 
   // vertical position
   if (isVertical) {
@@ -232,12 +232,12 @@ const putShipOnBoard = (ship, board, { x, y, isVertical }) => {
 
   return newBoard;
 };
-// TODO
+
 const removeShipFromBoard = (shipData, board) => {
   const { ship, isVertical } = shipData;
   const { x, y } = shipData.cords[0];
   const startPoint = { x, y };
-  const newBoard = [...board];
+  const newBoard = JSON.parse(JSON.stringify(board));
 
   // vertical position
   if (isVertical) {
@@ -391,11 +391,23 @@ const createGameBoard = () => {
         const shipData = findShipData(shipsData, { x: cx, y: cy });
 
         if (shipData) {
+          const bBoard = JSON.parse(JSON.stringify(board));
+          const bShipsData = [...shipsData];
+          const bBoardInfo = { ...boardInfo };
+
           board = removeShipFromBoard(shipData, board);
           shipsData = removeShipData(shipsData, { x: cx, y: cy });
           boardInfo = removeShipFromBoardInfo(shipData.ship, boardInfo);
 
-          return this.placeShipAt(shipData.ship, { x: nx, y: ny, isVertical });
+          if (!this.placeShipAt(shipData.ship, { x: nx, y: ny, isVertical })) {
+            board = bBoard;
+            shipsData = bShipsData;
+            boardInfo = bBoardInfo;
+
+            return false;
+          }
+
+          return true;
         }
       }
 
