@@ -288,6 +288,7 @@ const createGameBoard = () => {
           shipsData.push({
             ship,
             cords,
+            isVertical,
           });
           board = putShipOnBoard(ship, board, { x, y, isVertical });
           shipsCount += 1;
