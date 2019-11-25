@@ -144,10 +144,17 @@ const isShipRequired = (ship, boardInfo) => {
   return boardInfo[shipType] + 1 <= REQUIRED_TYPES_OF_SHIPS[shipType];
 };
 
-const updateBoardInfo = (ship, boardInfo) => {
+const addShipToBoardInfo = (ship, boardInfo) => {
   const newBoardInfo = { ...boardInfo };
 
   newBoardInfo[`ship${ship.getLength()}`] += 1;
+  return { ...newBoardInfo };
+};
+
+const removeShipFromBoardInfo = (ship, boardInfo) => {
+  const newBoardInfo = { ...boardInfo };
+
+  newBoardInfo[`ship${ship.getLength()}`] -= 1;
   return { ...newBoardInfo };
 };
 
@@ -225,8 +232,83 @@ const putShipOnBoard = (ship, board, { x, y, isVertical }) => {
 
   return newBoard;
 };
+// TODO
+const removeShipFromBoard = (shipData, board) => {
+  const { ship, isVertical } = shipData;
+  const { x, y } = shipData.cords[0];
+  const startPoint = { x, y };
+  const newBoard = [...board];
 
-const removeShipFromBoard = (ship, board, { x, y, isVertical }) => {};
+  // vertical position
+  if (isVertical) {
+    const endPoint = { x, y: y + ship.getLength() - 1 };
+
+    // remove the ship
+    for (let i = startPoint.y; i <= endPoint.y; i += 1) {
+      newBoard[startPoint.x][i] = '~';
+    }
+
+    // remove the left border
+    for (let i = startPoint.y - 1; i <= endPoint.y + 1; i += 1) {
+      if (isCordsValid({ x: startPoint.x - 1, y: i })) {
+        newBoard[startPoint.x - 1][i] = '~';
+      }
+    }
+
+    // remove the right border
+    for (let i = startPoint.y - 1; i <= endPoint.y + 1; i += 1) {
+      if (isCordsValid({ x: startPoint.x + 1, y: i })) {
+        newBoard[startPoint.x + 1][i] = '~';
+      }
+    }
+
+    // remove the top border
+    if (isCordsValid({ x: startPoint.x, y: startPoint.y - 1 })) {
+      newBoard[startPoint.x][startPoint.y - 1] = '~';
+    }
+
+    // remove the bottom border
+    if (isCordsValid({ x: startPoint.x, y: endPoint.y + 1 })) {
+      newBoard[startPoint.x][endPoint.y + 1] = '~';
+    }
+
+    return newBoard;
+  }
+
+  // horizontal position
+  const endPoint = { x: x + ship.getLength() - 1, y };
+
+  // remove the ship
+  for (let i = startPoint.x; i <= endPoint.x; i += 1) {
+    newBoard[i][startPoint.y] = '~';
+  }
+
+  // remove the top border
+  for (let i = startPoint.x - 1; i <= endPoint.x + 1; i += 1) {
+    if (isCordsValid({ x: i, y: startPoint.y - 1 })) {
+      newBoard[i][startPoint.y - 1] = '~';
+    }
+  }
+
+  // remove the bottom border
+  for (let i = startPoint.x - 1; i <= endPoint.x + 1; i += 1) {
+    if (isCordsValid({ x: i, y: startPoint.y + 1 })) {
+      newBoard[i][startPoint.y + 1] = '~';
+    }
+  }
+
+  // remove the left border
+  if (isCordsValid({ x: startPoint.x - 1, y: startPoint.y })) {
+    newBoard[startPoint.x - 1][startPoint.y] = '~';
+  }
+
+  // remove the right border
+  if (isCordsValid({ x: endPoint.x + 1, y: startPoint.y })) {
+    newBoard[endPoint.x + 1][startPoint.y] = '~';
+  }
+
+  return newBoard;
+};
 
 const getRandomCord = () => Math.floor(Math.random() * (MAX_CORD_RANGE + 1));
 
@@ -236,6 +318,10 @@ const findShipData = (shipsData, { x, y }) => (
   shipsData.find((s) => s.cords.find((c) => c.x === x && c.y === y)));
 
 const getPositionIndex = (ship, { x, y }) => ship.cords.findIndex((c) => c.x === x && c.y === y);
+
+const removeShipData = (shipsData, { x, y }) => (
+  shipsData.filter((s) => !s.cords.find((c) => c.x === x && c.y === y))
+);
 
 const createGameBoard = () => {
   let board = [
@@ -253,13 +339,13 @@ const createGameBoard = () => {
   let boardReady = false;
   let shipsCount = 0;
   let sunkShips = 0;
+  let shipsData = [];
   let boardInfo = {
     ship4: 0,
     ship3: 0,
     ship2: 0,
     ship1: 0,
   };
-  const shipsData = [];
 
   return {
     isReady: () => shipsCount === REQUIRED_NUMBER_OF_SHIPS && boardReady,
@@ -283,7 +369,7 @@ const createGameBoard = () => {
     placeShipAt(ship, { x = -1, y = -1, isVertical = false } = {}) {
       if (!this.isReady() && isShipValid(ship, board, { x, y, isVertical })) {
         if (isShipRequired(ship, boardInfo)) {
-          boardInfo = updateBoardInfo(ship, boardInfo);
+          boardInfo = addShipToBoardInfo(ship, boardInfo);
           const cords = getAllShipCords(ship, { x, y, isVertical });
           shipsData.push({
             ship,
@@ -294,6 +380,22 @@ const createGameBoard = () => {
           shipsCount += 1;
 
           return true;
+        }
+      }
+
+      return false;
+    },
+
+    replaceShipFrom({ cx = -1, cy = -1 }, { nx = -1, ny = -1, isVertical = false } = {}) {
+      if (!this.isReady()) {
+        const shipData = findShipData(shipsData, { x: cx, y: cy });
+
+        if (shipData) {
+          board = removeShipFromBoard(shipData, board);
+          shipsData = removeShipData(shipsData, { x: cx, y: cy });
+          boardInfo = removeShipFromBoardInfo(shipData.ship, boardInfo);
+
+          return this.placeShipAt(shipData.ship, { x: nx, y: ny, isVertical });
         }
       }
 
