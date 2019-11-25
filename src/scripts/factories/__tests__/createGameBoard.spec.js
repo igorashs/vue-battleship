@@ -262,7 +262,7 @@ describe('createGameBoard', () => {
 
     expect(board.placeShipAt(createShip({ length: 4 }), { x: 0, y: 0 })).toBe(true);
 
-    expect(board.replaceShipFrom({ cx: 0, cy: 2 }, { nx: 0, ny: 0, isVertical: true })).toBe(true);
-    expect(board.replaceShipFrom({ cx: 2, cy: 0 }, { nx: 0, ny: 0 })).toBe(true);
+    expect(board.replaceShipFrom({ cx: 2, cy: 0 }, { nx: 0, ny: 0, isVertical: true })).toBe(true);
+    expect(board.replaceShipFrom({ cx: 0, cy: 2 }, { nx: 0, ny: 0 })).toBe(true);
   });
 });
