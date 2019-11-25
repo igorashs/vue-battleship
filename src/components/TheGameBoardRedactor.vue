@@ -145,7 +145,6 @@ export default {
       const cord = JSON.parse(e.currentTarget.dataset.cord);
       const { position } = e.currentTarget.dataset;
       e.dataTransfer.setData('text/plain', JSON.stringify({ cord, cloned: true, position }));
-      console.log(e.currentTarget.parrentElement);
       this.draggedShip = e.currentTarget;
     },
 
@@ -171,6 +170,7 @@ export default {
 
       try {
         data = JSON.parse(e.dataTransfer.getData('text/plain'));
+        JSON.parse(e.target.dataset.cord);
         isDataValid = true;
       } catch {
         isDataValid = false;
@@ -198,6 +198,7 @@ export default {
           if (this.board.placeShipAt(createShip({ length }), { ...cord, isVertical })) {
             const shipType = `ship${length}`;
             const ship = this.$refs[shipType][0].cloneNode(true);
+
             ship.dataset.cord = e.target.dataset.cord;
             ship.dataset.position = position;
 
