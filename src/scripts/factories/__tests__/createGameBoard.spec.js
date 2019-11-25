@@ -7,7 +7,7 @@ describe('createGameBoard', () => {
   it('create a gameBoard with no ships', () => {
     const gameBoard = createGameBoard();
 
-    expect(gameBoard.isReady()).toBe(false);
+    expect(gameBoard.setBoardToReady().isReady()).toBe(false);
     expect(gameBoard.isAllShipsSunk()).toBe(false);
     expect(gameBoard.getAliveShipsCount()).toBe(0);
   });
@@ -110,21 +110,21 @@ describe('createGameBoard', () => {
   it('it can be 10 ships only on a board', () => {
     const gameBoard = createGameBoard();
 
-    expect(gameBoard.isReady()).toBe(false);
+    expect(gameBoard.setBoardToReady().isReady()).toBe(false);
     expect(gameBoard.placeShipAt(createShip({ length: 4 }), { x: 0, y: 0 })).toBe(true);
     expect(gameBoard.placeShipAt(createShip({ length: 3 }), { x: 0, y: 2 })).toBe(true);
     expect(gameBoard.placeShipAt(createShip({ length: 3 }), { x: 0, y: 4 })).toBe(true);
     expect(gameBoard.placeShipAt(createShip({ length: 2 }), { x: 0, y: 6 })).toBe(true);
     expect(gameBoard.placeShipAt(createShip({ length: 2 }), { x: 0, y: 8 })).toBe(true);
     expect(gameBoard.placeShipAt(createShip({ length: 2 }), { x: 5, y: 0 })).toBe(true);
-    expect(gameBoard.isReady()).toBe(false);
+    expect(gameBoard.setBoardToReady().isReady()).toBe(false);
     expect(gameBoard.placeShipAt(createShip({ length: 1 }), { x: 5, y: 2 })).toBe(true);
     expect(gameBoard.placeShipAt(createShip({ length: 1 }), { x: 5, y: 4 })).toBe(true);
     expect(gameBoard.placeShipAt(createShip({ length: 1 }), { x: 5, y: 6 })).toBe(true);
     expect(gameBoard.placeShipAt(createShip({ length: 1 }), { x: 5, y: 8 })).toBe(true);
 
     expect(gameBoard.placeShipAt(createShip({ length: 1 }), { x: 9, y: 0 })).toBe(false);
-    expect(gameBoard.isReady()).toBe(true);
+    expect(gameBoard.setBoardToReady().isReady()).toBe(true);
   });
 
   it('can take hits only when board is ready | return false', () => {
@@ -136,14 +136,14 @@ describe('createGameBoard', () => {
 
     expect(gameBoard.receiveAttack({ x: 0, y: 0 })).toBe(false);
 
-    expect(gameBoard.isReady()).toBe(false);
+    expect(gameBoard.setBoardToReady().isReady()).toBe(false);
   });
 
   it('place ships on random cords on board', () => {
     const gameBoard = createGameBoard();
 
     expect(gameBoard.placeShipRandom(createShip({ length: 4 }))).toBe(true);
-    expect(gameBoard.isReady()).toBe(false);
+    expect(gameBoard.setBoardToReady().isReady()).toBe(false);
     expect(gameBoard.placeShipRandom(createShip({ length: 3 }))).toBe(true);
     expect(gameBoard.placeShipRandom(createShip({ length: 3 }))).toBe(true);
     expect(gameBoard.placeShipRandom(createShip({ length: 2 }))).toBe(true);
@@ -153,7 +153,7 @@ describe('createGameBoard', () => {
     expect(gameBoard.placeShipRandom(createShip({ length: 1 }))).toBe(true);
     expect(gameBoard.placeShipRandom(createShip({ length: 1 }))).toBe(true);
     expect(gameBoard.placeShipRandom(createShip({ length: 1 }))).toBe(true);
-    expect(gameBoard.isReady()).toBe(true);
+    expect(gameBoard.setBoardToReady().isReady()).toBe(true);
     expect(gameBoard.isAllShipsSunk()).toBe(false);
     expect(gameBoard.getAliveShipsCount()).toBe(10);
   });
@@ -177,6 +177,9 @@ describe('createGameBoard', () => {
 
     expect(gameBoard.placeShipAt(createShip({ length: 1 }), { x: 6, y: 8 })).toBe(true);
 
+    // block replacement
+    expect(gameBoard.setBoardToReady().isReady()).toBe(true);
+
     // attack in the same spot
     expect(gameBoard.receiveAttack({ x: 0, y: 0 })).toBe(true);
     expect(gameBoard.receiveAttack({ x: 0, y: 0 })).toBe('*');
@@ -197,6 +200,9 @@ describe('createGameBoard', () => {
     expect(gameBoard.placeShipAt(createShip({ length: 1 }), { x: 6, y: 4 })).toBe(true);
     expect(gameBoard.placeShipAt(createShip({ length: 1 }), { x: 6, y: 6 })).toBe(true);
     expect(gameBoard.placeShipAt(createShip({ length: 1 }), { x: 6, y: 8 })).toBe(true);
+
+    // block replacement
+    expect(gameBoard.setBoardToReady().isReady()).toBe(true);
 
     expect(gameBoard.isAllShipsSunk()).toBe(false);
     expect(gameBoard.getAliveShipsCount()).toBe(10);
