@@ -52,7 +52,7 @@
       <div class="options">
         <button @click="handleRandomPlacement">Random</button>
         <button @click="resetBoard()">Reset</button>
-        <button>Next</button>
+        <button :class="{ disable: totalShips !== 0 }">Next</button>
       </div>
     </div>
   </v-dialog>
@@ -119,6 +119,10 @@ export default {
       }
 
       return cords;
+    },
+
+    totalShips() {
+      return Object.entries(this.ships).reduce((prev, cur) => prev + cur[1], 0);
     },
   },
 
@@ -408,4 +412,8 @@ export default {
   border: 4px solid rgb(70, 70, 70);
 }
 
+.disable {
+  pointer-events: none;
+  color: rgb(117, 117, 117);
+}
 </style>
