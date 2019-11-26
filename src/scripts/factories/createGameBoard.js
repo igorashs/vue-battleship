@@ -455,7 +455,7 @@ const createGameBoard = () => {
         isVertical = getRandomPosition();
       } while (!this.placeShipAt(ship, { x, y, isVertical }));
 
-      return true;
+      return { x, y, isVertical };
     },
 
     receiveAttack({ x, y }) {
