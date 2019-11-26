@@ -142,18 +142,18 @@ describe('createGameBoard', () => {
   it('place ships on random cords on board', () => {
     const gameBoard = createGameBoard();
 
-    expect(gameBoard.placeShipRandom(createShip({ length: 4 }))).toBe(true);
+    expect(gameBoard.placeShipRandom(createShip({ length: 4 }))).toBeTruthy();
     expect(gameBoard.setBoardToReady().isReady()).toBe(false);
-    expect(gameBoard.placeShipRandom(createShip({ length: 3 }))).toBe(true);
-    expect(gameBoard.placeShipRandom(createShip({ length: 3 }))).toBe(true);
-    expect(gameBoard.placeShipRandom(createShip({ length: 2 }))).toBe(true);
-    expect(gameBoard.placeShipRandom(createShip({ length: 2 }))).toBe(true);
-    expect(gameBoard.placeShipRandom(createShip({ length: 2 }))).toBe(true);
-    expect(gameBoard.placeShipRandom(createShip({ length: 1 }))).toBe(true);
-    expect(gameBoard.placeShipRandom(createShip({ length: 1 }))).toBe(true);
-    expect(gameBoard.placeShipRandom(createShip({ length: 1 }))).toBe(true);
-    expect(gameBoard.placeShipRandom(createShip({ length: 1 }))).toBe(true);
-    expect(gameBoard.setBoardToReady().isReady()).toBe(true);
+    expect(gameBoard.placeShipRandom(createShip({ length: 3 }))).toBeTruthy();
+    expect(gameBoard.placeShipRandom(createShip({ length: 3 }))).toBeTruthy();
+    expect(gameBoard.placeShipRandom(createShip({ length: 2 }))).toBeTruthy();
+    expect(gameBoard.placeShipRandom(createShip({ length: 2 }))).toBeTruthy();
+    expect(gameBoard.placeShipRandom(createShip({ length: 2 }))).toBeTruthy();
+    expect(gameBoard.placeShipRandom(createShip({ length: 1 }))).toBeTruthy();
+    expect(gameBoard.placeShipRandom(createShip({ length: 1 }))).toBeTruthy();
+    expect(gameBoard.placeShipRandom(createShip({ length: 1 }))).toBeTruthy();
+    expect(gameBoard.placeShipRandom(createShip({ length: 1 }))).toBeTruthy();
+    expect(gameBoard.setBoardToReady().isReady()).toBeTruthy();
     expect(gameBoard.isAllShipsSunk()).toBe(false);
     expect(gameBoard.getAliveShipsCount()).toBe(10);
   });
