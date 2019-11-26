@@ -50,7 +50,7 @@
         </div>
       </div>
       <div class="options">
-        <button>Random</button>
+        <button @click="handleRandomPlacement">Random</button>
         <button>Next</button>
       </div>
     </div>
@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import createNewBoard, {
+import createGameBoard, {
   MAX_CORD_RANGE,
   MIN_CORD_RANGE,
   REQUIRED_TYPES_OF_SHIPS,
@@ -76,7 +76,7 @@ export default {
       MAX: MAX_CORD_RANGE,
       MIN: MIN_CORD_RANGE,
       ships: { ...REQUIRED_TYPES_OF_SHIPS },
-      board: createNewBoard(),
+      board: createGameBoard(),
       draggedShip: null,
     };
   },
@@ -212,6 +212,42 @@ export default {
           }
         }
       }
+    },
+
+    handleRandomPlacement() {
+      const renderNewShip = ({ x, y, isVertical }, length) => {
+        const shipType = `ship${length}`;
+        const ship = this.$refs[shipType][0].cloneNode(true);
+
+        ship.dataset.cord = JSON.stringify({ x, y });
+        ship.dataset.position = isVertical ? 'x' : 'y';
+
+        this.ships[shipType] -= 1;
+        ship.style.position = 'absolute';
+        ship.style['grid-auto-flow'] = isVertical ? 'row' : 'column';
+
+        [...document.querySelectorAll('.spot')].find((spot) => (
+          spot.dataset.cord === JSON.stringify({ x, y })
+        )).appendChild(ship);
+
+        ship.addEventListener('dragstart', this.handleShipInitialCord);
+        ship.addEventListener('click', this.handleChangePosition);
+      };
+
+      document.querySelectorAll('.spot > .ship').forEach((ship) => ship.remove());
+      this.board = createGameBoard();
+      this.ships = { ...REQUIRED_TYPES_OF_SHIPS };
+
+      renderNewShip({ ...this.board.placeShipRandom(createShip({ length: 4 })) }, 4);
+      renderNewShip({ ...this.board.placeShipRandom(createShip({ length: 3 })) }, 3);
+      renderNewShip({ ...this.board.placeShipRandom(createShip({ length: 3 })) }, 3);
+      renderNewShip({ ...this.board.placeShipRandom(createShip({ length: 2 })) }, 2);
+      renderNewShip({ ...this.board.placeShipRandom(createShip({ length: 2 })) }, 2);
+      renderNewShip({ ...this.board.placeShipRandom(createShip({ length: 2 })) }, 2);
+      renderNewShip({ ...this.board.placeShipRandom(createShip({ length: 1 })) }, 1);
+      renderNewShip({ ...this.board.placeShipRandom(createShip({ length: 1 })) }, 1);
+      renderNewShip({ ...this.board.placeShipRandom(createShip({ length: 1 })) }, 1);
+      renderNewShip({ ...this.board.placeShipRandom(createShip({ length: 1 })) }, 1);
     },
   },
 };
