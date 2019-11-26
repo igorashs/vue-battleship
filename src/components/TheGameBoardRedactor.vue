@@ -51,6 +51,7 @@
       </div>
       <div class="options">
         <button @click="handleRandomPlacement">Random</button>
+        <button @click="resetBoard()">Reset</button>
         <button>Next</button>
       </div>
     </div>
@@ -124,6 +125,12 @@ export default {
   methods: {
     getShipLength(ship) {
       return +ship.match(/\d/g).join('');
+    },
+
+    resetBoard() {
+      document.querySelectorAll('.spot > .ship').forEach((ship) => ship.remove());
+      this.board = createGameBoard();
+      this.ships = { ...REQUIRED_TYPES_OF_SHIPS };
     },
 
     handleChangePosition(e) {
@@ -234,9 +241,7 @@ export default {
         ship.addEventListener('click', this.handleChangePosition);
       };
 
-      document.querySelectorAll('.spot > .ship').forEach((ship) => ship.remove());
-      this.board = createGameBoard();
-      this.ships = { ...REQUIRED_TYPES_OF_SHIPS };
+      this.resetBoard();
 
       renderNewShip({ ...this.board.placeShipRandom(createShip({ length: 4 })) }, 4);
       renderNewShip({ ...this.board.placeShipRandom(createShip({ length: 3 })) }, 3);
