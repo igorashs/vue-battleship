@@ -427,6 +427,7 @@ const createGameBoard = () => {
           board = removeShipFromBoard(shipData, board);
           shipsData = removeShipData(shipsData, { x: cx, y: cy });
           boardInfo = removeShipFromBoardInfo(shipData.ship, boardInfo);
+          shipsCount -= 1;
 
           if (!this.placeShipAt(shipData.ship, { x: nx, y: ny, isVertical })) {
             board = bBoard;
