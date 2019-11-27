@@ -2,12 +2,13 @@
   <v-app>
     <TheNavBar @show-game-menu="handleShowGameMenu" />
     <v-content>
+      <TheGame ref="game" />
       <TheGameMenu
         :isOpen="isGameMenuOpen"
         :options="gameMenuOptions"
         @start-new-game="handleNewGame"
       />
-      <TheGameBoardRedactor :isOpen="isGameBoardRedactorOpen" />
+      <TheGameBoardRedactor :isOpen="isGameBoardRedactorOpen" @start-game="handleStartGame"/>
     </v-content>
   </v-app>
 </template>
@@ -16,11 +17,13 @@
 import TheNavBar from './components/TheNavBar.vue';
 import TheGameMenu from './components/TheGameMenu.vue';
 import TheGameBoardRedactor from './components/TheGameBoardRedactor.vue';
+import TheGame from './components/TheGame.vue';
 
 export default {
   name: 'App',
 
   components: {
+    TheGame,
     TheNavBar,
     TheGameMenu,
     TheGameBoardRedactor,
@@ -31,14 +34,6 @@ export default {
     isGameBoardRedactorOpen: false,
     gameMenuOptions: {
       resume: {
-        isDisabled: true,
-      },
-
-      save: {
-        isDisabled: true,
-      },
-
-      load: {
         isDisabled: true,
       },
     },
@@ -53,13 +48,25 @@ export default {
       this.isGameMenuOpen = true;
     },
 
-    showGameBoardRedactor() {
+    openGameBoardRedactor() {
       this.isGameBoardRedactorOpen = true;
+    },
+
+    closeGameBoardRedactor() {
+      this.isGameBoardRedactorOpen = false;
     },
 
     handleNewGame() {
       this.hideGameMenu();
-      this.showGameBoardRedactor();
+      this.openGameBoardRedactor();
+
+      this.$refs.game.resetTheGame();
+    },
+
+    handleStartGame(plBoard, plBoardContainerElement) {
+      this.closeGameBoardRedactor();
+
+      this.$refs.game.renderTheBoards(plBoardContainerElement);
     },
   },
 };
