@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="isOpen" persistent>
+  <v-dialog v-model="resetAndDisplay" persistent>
     <div class="container">
       <h2>Arrange your board</h2>
       <div class="redactor">
@@ -52,7 +52,7 @@
       <div class="options">
         <button @click="handleRandomPlacement">Random</button>
         <button @click="resetBoard()">Reset</button>
-        <button :class="{ disable: totalShips !== 0 }">Next</button>
+        <button @click="onClickStartBtn"  :class="{ disable: totalShips !== 0 }">Start</button>
       </div>
     </div>
   </v-dialog>
@@ -83,6 +83,12 @@ export default {
   },
 
   computed: {
+    resetAndDisplay() {
+      if (this.isOpen) this.resetBoard();
+
+      return this.isOpen;
+    },
+
     cords() {
       const cords = [];
       for (let i = this.MIN; i <= this.MAX; i += 1) {
@@ -127,6 +133,14 @@ export default {
   },
 
   methods: {
+    onClickStartBtn() {
+      const boardElement = document.querySelector('.board').cloneNode(true);
+      this.board.setBoardToReady();
+      const board = { ...this.board };
+
+      this.$emit('start-game', board, boardElement);
+    },
+
     getShipLength(ship) {
       return +ship.match(/\d/g).join('');
     },
