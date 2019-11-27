@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="resetAndDisplay" persistent>
+  <v-dialog v-model="resetAndDisplay" persistent overlay-opacity="0.8">
     <div class="container">
       <h2>Arrange your board</h2>
       <div class="redactor">
