@@ -7,12 +7,6 @@
       <button class="menu-btn" :class="{ disable: options.resume.isDisabled }">
         Resume
       </button>
-      <button class="menu-btn" :class="{ disable: options.save.isDisabled }">
-        Save
-      </button>
-      <button class="menu-btn" :class="{ disable: options.load.isDisabled }">
-        Load
-      </button>
     </div>
   </v-dialog>
 </template>
