@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="isOpen" persistent>
+  <v-dialog v-model="isOpen" persistent overlay-opacity="0.8">
     <div class="menu-container">
       <button class="btn" @click="$emit('start-new-game')">
         New Game
