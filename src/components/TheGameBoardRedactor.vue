@@ -134,11 +134,11 @@ export default {
 
   methods: {
     onClickStartBtn() {
-      const boardElement = document.querySelector('.board').cloneNode(true);
+      const boardContainerElement = document.querySelector('.board-container').cloneNode(true);
       this.board.setBoardToReady();
       const board = { ...this.board };
 
-      this.$emit('start-game', board, boardElement);
+      this.$emit('start-game', board, boardContainerElement);
     },
 
     getShipLength(ship) {
