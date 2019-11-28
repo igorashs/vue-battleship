@@ -10,6 +10,8 @@
 
 <script>
 export default {
+  name: 'TheNavBar',
+
   methods: {
     handleOpenRepo() {
       window.open('https://github.com/igorashs/vue-battleship', '_blank');

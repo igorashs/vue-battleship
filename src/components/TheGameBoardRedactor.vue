@@ -68,6 +68,8 @@ import createGameBoard, {
 import createShip from '../scripts/factories/createShip';
 
 export default {
+  name: 'TheGameBoardRedactor',
+
   props: {
     isOpen: Boolean,
   },
