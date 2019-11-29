@@ -19,6 +19,8 @@ import TheGameMenu from './components/TheGameMenu.vue';
 import TheGameBoardRedactor from './components/TheGameBoardRedactor.vue';
 import TheGame from './components/TheGame.vue';
 
+import createPlayer from './scripts/factories/createPlayer';
+
 export default {
   name: 'App',
 
@@ -37,6 +39,8 @@ export default {
         isDisabled: true,
       },
     },
+    pl: null,
+    pc: null,
   }),
 
   methods: {
@@ -63,10 +67,13 @@ export default {
       this.$refs.game.resetTheGame();
     },
 
-    handleStartGame(plBoard, plBoardContainerElement) {
+    handleStartGame(plBoard, plBoardElement, pcBoard, pcBoardElement) {
       this.closeGameBoardRedactor();
 
-      this.$refs.game.renderTheBoards(plBoardContainerElement);
+      this.pl = createPlayer({ board: plBoard });
+      this.pc = createPlayer({ board: pcBoard, isPc: true });
+
+      this.$refs.game.renderTheBoards(plBoardElement, pcBoardElement);
     },
   },
 };
