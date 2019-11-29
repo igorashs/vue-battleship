@@ -136,11 +136,27 @@ export default {
 
   methods: {
     onClickStartBtn() {
-      const boardContainerElement = document.querySelector('.board-container').cloneNode(true);
+      const plBoardElement = document.querySelector('.board-container').cloneNode(true);
       this.board.setBoardToReady();
-      const board = { ...this.board };
+      const plBoard = { ...this.board };
 
-      this.$emit('start-game', board, boardContainerElement);
+      this.resetBoard();
+      const pcBoardElement = document.querySelector('.board-container').cloneNode(true);
+
+      this.board.placeShipRandom(createShip({ length: 4 }));
+      this.board.placeShipRandom(createShip({ length: 3 }));
+      this.board.placeShipRandom(createShip({ length: 3 }));
+      this.board.placeShipRandom(createShip({ length: 2 }));
+      this.board.placeShipRandom(createShip({ length: 2 }));
+      this.board.placeShipRandom(createShip({ length: 2 }));
+      this.board.placeShipRandom(createShip({ length: 1 }));
+      this.board.placeShipRandom(createShip({ length: 1 }));
+      this.board.placeShipRandom(createShip({ length: 1 }));
+      this.board.placeShipRandom(createShip({ length: 1 }));
+
+      this.board.setBoardToReady();
+      const pcBoard = { ...this.board };
+      this.$emit('start-game', plBoard, plBoardElement, pcBoard, pcBoardElement);
     },
 
     getShipLength(ship) {
