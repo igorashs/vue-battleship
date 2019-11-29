@@ -14,33 +14,34 @@ export default {
   name: 'TheGame',
 
   data: () => ({
-
+    plBoardElement: null,
+    pcBoardElement: null,
   }),
 
   methods: {
     initTheGame(plBoardElement, pcBoardElement) {
-      this.renderTheBoards(plBoardElement, pcBoardElement);
-      this.addPcBoardEvent(pcBoardElement);
+      this.plBoardElement = plBoardElement;
+      this.pcBoardElement = pcBoardElement;
+
+      this.renderTheBoards();
+      this.addPcBoardEvent();
     },
 
-    renderTheBoards(plBoardElement, pcBoardElement) {
+    renderTheBoards() {
       const pl = document.querySelector('.pl');
-      pl.appendChild(plBoardElement);
+      pl.appendChild(this.plBoardElement);
 
       const pc = document.querySelector('.pc');
-      pc.appendChild(pcBoardElement);
+      pc.appendChild(this.pcBoardElement);
     },
 
     resetTheGame() {
-      const plBoard = document.querySelector('.pl');
-      if (plBoard.firstElementChild) plBoard.firstElementChild.remove();
-
-      const pcBoard = document.querySelector('.pc');
-      if (pcBoard.firstElementChild) pcBoard.firstElementChild.remove();
+      if (this.plBoardElement) this.plBoardElement.remove();
+      if (this.pcBoardElement) this.pcBoardElement.remove();
     },
 
-    addPcBoardEvent(pcBoardElement) {
-      pcBoardElement.addEventListener('click', (e) => {
+    addPcBoardEvent() {
+      this.pcBoardElement.addEventListener('click', (e) => {
         if (e.target.classList.contains('spot')) {
           this.$emit('round', JSON.parse(e.target.dataset.cord));
         }
