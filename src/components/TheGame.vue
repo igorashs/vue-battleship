@@ -1,7 +1,9 @@
 <template>
   <div class="game-wrapper">
     <div class="game-container">
-      <div class="player-board">
+      <div class="pl">
+      </div>
+      <div class="pc">
       </div>
     </div>
   </div>
@@ -17,12 +19,12 @@ export default {
 
   methods: {
     renderTheBoards(plBoardElement) {
-      const playerBoardContainer = document.querySelector('.player-board');
-      playerBoardContainer.appendChild(plBoardElement);
+      const plBoardContainer = document.querySelector('.pl');
+      plBoardContainer.appendChild(plBoardElement);
     },
 
     resetTheGame() {
-      const plBoard = document.querySelector('.player-board');
+      const plBoard = document.querySelector('.pl');
       if (plBoard.firstElementChild) plBoard.firstElementChild.remove();
     },
   },
@@ -33,6 +35,7 @@ export default {
 .game-container {
   font-family: bfont;
   --spot-size: 4rem;
+  padding: 4rem;
   display: flex;
 }
 
