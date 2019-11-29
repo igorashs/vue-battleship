@@ -20,6 +20,7 @@ export default {
   methods: {
     initTheGame(plBoardElement, pcBoardElement) {
       this.renderTheBoards(plBoardElement, pcBoardElement);
+      this.addPcBoardEvent(pcBoardElement);
     },
 
     renderTheBoards(plBoardElement, pcBoardElement) {
@@ -36,6 +37,14 @@ export default {
 
       const pcBoard = document.querySelector('.pc');
       if (pcBoard.firstElementChild) pcBoard.firstElementChild.remove();
+    },
+
+    addPcBoardEvent(pcBoardElement) {
+      pcBoardElement.addEventListener('click', (e) => {
+        if (e.target.classList.contains('spot')) {
+          this.$emit('round', JSON.parse(e.target.dataset.cord));
+        }
+      });
     },
   },
 };
