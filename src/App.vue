@@ -2,7 +2,10 @@
   <v-app>
     <TheNavBar @show-game-menu="handleShowGameMenu" />
     <v-content>
-      <TheGame ref="game" />
+      <TheGame
+        ref="game"
+        @round="handleRound"
+      />
       <TheGameMenu
         :isOpen="isGameMenuOpen"
         :options="gameMenuOptions"
@@ -74,6 +77,12 @@ export default {
       this.pc = createPlayer({ board: pcBoard, isPc: true });
 
       this.$refs.game.initTheGame(plBoardElement, pcBoardElement);
+    },
+
+    handleRound(pcCordAttack) {
+      const { x, y } = JSON.parse(pcCordAttack);
+      const pcResponse = this.pc.receiveAttack({ x, y });
+      this.$refs.game.updatePcBoard(pcCordAttack, pcResponse);
     },
   },
 };
