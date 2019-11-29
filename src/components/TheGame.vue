@@ -20,7 +20,6 @@ export default {
   methods: {
     initTheGame(plBoardElement, pcBoardElement) {
       this.renderTheBoards(plBoardElement, pcBoardElement);
-      // this.addEventsForBoard();
     },
 
     renderTheBoards(plBoardElement, pcBoardElement) {
@@ -54,5 +53,17 @@ export default {
 .pl, .pc {
   display: flex;
   flex-direction: column;
+}
+
+.pl >>> .ship,
+.pc >>> .ship  {
+  cursor: initial;
+}
+
+.pc >>> .spot {
+  cursor: crosshair;
+}
+.pc >>> .spot:hover {
+  background-color: rgb(98, 0, 255);
 }
 </style>
