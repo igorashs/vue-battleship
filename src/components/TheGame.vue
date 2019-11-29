@@ -18,6 +18,11 @@ export default {
   }),
 
   methods: {
+    initTheGame(plBoardElement, pcBoardElement) {
+      this.renderTheBoards(plBoardElement, pcBoardElement);
+      // this.addEventsForBoard();
+    },
+
     renderTheBoards(plBoardElement, pcBoardElement) {
       const pl = document.querySelector('.pl');
       pl.appendChild(plBoardElement);
@@ -107,7 +112,7 @@ export default {
   grid-auto-flow: column;
   background-color: rgb(128, 128, 128);
   grid-gap: 4px;
-  cursor: move;
+  cursor: initial;
   z-index: 69;
 }
 
