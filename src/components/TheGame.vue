@@ -18,14 +18,20 @@ export default {
   }),
 
   methods: {
-    renderTheBoards(plBoardElement) {
-      const plBoardContainer = document.querySelector('.pl');
-      plBoardContainer.appendChild(plBoardElement);
+    renderTheBoards(plBoardElement, pcBoardElement) {
+      const pl = document.querySelector('.pl');
+      pl.appendChild(plBoardElement);
+
+      const pc = document.querySelector('.pc');
+      pc.appendChild(pcBoardElement);
     },
 
     resetTheGame() {
       const plBoard = document.querySelector('.pl');
       if (plBoard.firstElementChild) plBoard.firstElementChild.remove();
+
+      const pcBoard = document.querySelector('.pc');
+      if (pcBoard.firstElementChild) pcBoard.firstElementChild.remove();
     },
   },
 };
@@ -37,6 +43,12 @@ export default {
   --spot-size: 4rem;
   padding: 4rem;
   display: flex;
+  justify-content: space-around;
+}
+
+.pl, .pc {
+  display: flex;
+  flex-direction: column;
 }
 
 .cords {
