@@ -433,6 +433,7 @@ const createGameBoard = () => {
             board = bBoard;
             shipsData = bShipsData;
             boardInfo = bBoardInfo;
+            shipsCount += 1;
 
             return false;
           }
