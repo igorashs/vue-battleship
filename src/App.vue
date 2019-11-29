@@ -73,7 +73,7 @@ export default {
       this.pl = createPlayer({ board: plBoard });
       this.pc = createPlayer({ board: pcBoard, isPc: true });
 
-      this.$refs.game.renderTheBoards(plBoardElement, pcBoardElement);
+      this.$refs.game.initTheGame(plBoardElement, pcBoardElement);
     },
   },
 };
