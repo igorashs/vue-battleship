@@ -131,6 +131,7 @@ export default {
   text-shadow: 0 0 2px black;
   text-align: center;
   font-size: var(--spot-size);
+  user-select: none;
 }
 
 .pc >>> .spot {
