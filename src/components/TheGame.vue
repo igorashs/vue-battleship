@@ -86,6 +86,23 @@ export default {
         firstSpot.appendChild(ship);
       }
     },
+
+    updatePlBoard(cord, response) {
+      if (response === true || response.ship) {
+        const part = this.plBoardElement
+          .querySelector(`.part[data-cord=${JSON.stringify(cord)}]`);
+
+        part.append('x');
+        part.style.backgroundColor = 'rgb(218, 100, 100)';
+      }
+
+      if (response === false) {
+        const spot = this.plBoardElement
+          .querySelector(`.spot[data-cord=${JSON.stringify(cord)}]`);
+
+        spot.append('*');
+      }
+    },
   },
 };
 </script>
@@ -109,12 +126,17 @@ export default {
   cursor: initial;
 }
 
-.pc >>> .spot {
-  cursor: crosshair;
+.pc >>> .spot,
+.pl >>> .spot {
   text-shadow: 0 0 2px black;
   text-align: center;
   font-size: var(--spot-size);
 }
+
+.pc >>> .spot {
+  cursor: crosshair;
+}
+
 .pc >>> .spot:hover {
   background-color: rgb(98, 0, 255);
 }
@@ -132,6 +154,10 @@ export default {
   height: var(--spot-size);
   background-color: rgb(218, 100, 100);
   border: 4px solid rgb(70, 70, 70);
+}
+
+.pc >>> .spot .part ,
+.pl >>> .spot .part {
   text-shadow: 0 0 2px black;
   text-align: center;
   font-size: var(--spot-size);
