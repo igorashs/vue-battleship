@@ -468,6 +468,7 @@ const createGameBoard = () => {
 
           if (damagedShipData.ship.hitAt({ position: damagedPosition + 1 }).isSunk()) {
             sunkShips += 1;
+            board[x][y] = 'x';
 
             return damagedShipData;
           }
