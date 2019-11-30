@@ -16,13 +16,17 @@ const playerAttack = ({ player, x, y }) => player.receiveAttack({ x, y });
 
 // ! a dumb player who shoots in random places
 const pcAttack = ({ player }) => {
-  let respond;
+  let attackInfo;
+  let x;
+  let y;
 
   do {
-    respond = player.receiveAttack(getRandomCord());
-  } while (respond !== '*');
+    x = getRandomCord();
+    y = getRandomCord();
+    attackInfo = player.receiveAttack({ x, y });
+  } while (attackInfo === '*');
 
-  return respond;
+  return { attackInfo, cord: { x, y } };
 };
 
 const createPlayer = ({ name = '', board, isPc = false } = {}) => {
