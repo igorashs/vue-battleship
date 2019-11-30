@@ -49,16 +49,19 @@ export default {
     },
 
     updatePcBoard(cord, response) {
-      const spot = this.pcBoardElement
-        .querySelector(`.spot[data-cord=${JSON.stringify(cord)}]`);
-
       if (response === true) {
+        const spot = this.pcBoardElement
+          .querySelector(`.spot[data-cord=${JSON.stringify(cord)}]`);
+
         spot.append('x');
         spot.style.backgroundColor = 'rgb(248, 39, 39)';
         spot.style.lineHeight = '1';
       }
 
       if (response === false) {
+        const spot = this.pcBoardElement
+          .querySelector(`.spot[data-cord=${JSON.stringify(cord)}]`);
+
         spot.append('*');
       }
 
