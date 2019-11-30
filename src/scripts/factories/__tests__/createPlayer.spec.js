@@ -16,6 +16,8 @@ const createBoardWithPlacedShips = () => {
   board.placeShipAt(createShip({ length: 1 }), { x: 6, y: 6 });
   board.placeShipAt(createShip({ length: 1 }), { x: 6, y: 8 });
 
+  board.setBoardToReady();
+
   return board;
 };
 
