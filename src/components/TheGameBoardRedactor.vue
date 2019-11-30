@@ -18,7 +18,7 @@
               :data-cord="stringifiedCords[MIN + i]"
               @dragover.prevent="handleDragOver"
               @dragleave="handleDragLeave"
-              @drop="handleDrop"
+              @drop.prevent="handleDrop"
             ></div>
           </div>
         </div>
