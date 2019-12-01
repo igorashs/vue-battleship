@@ -56,6 +56,7 @@ export default {
         spot.append('x');
         spot.style.backgroundColor = 'rgb(248, 39, 39)';
         spot.style.lineHeight = '1';
+        spot.style.pointerEvents = 'none';
       }
 
       if (response === false) {
@@ -63,6 +64,7 @@ export default {
           .querySelector(`.spot[data-cord=${JSON.stringify(cord)}]`);
 
         spot.append('*');
+        spot.style.pointerEvents = 'none';
       }
 
       if (response.ship) {
@@ -131,6 +133,10 @@ export default {
   text-shadow: 0 0 2px black;
   text-align: center;
   font-size: var(--spot-size);
+}
+
+.pc >>> .board-container,
+.pl >>> .board-container {
   user-select: none;
 }
 
