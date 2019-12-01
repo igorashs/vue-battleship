@@ -44,6 +44,8 @@ export default {
     },
     pl: null,
     pc: null,
+    plHasDamaged: false,
+    pcHasDamaged: false,
   }),
 
   methods: {
@@ -80,20 +82,33 @@ export default {
     },
 
     handleRound(pcCordAttack) {
-      this.makePlTurn(pcCordAttack);
-      this.makePcTurn();
+      this.plHasDamaged = this.makePlTurn(pcCordAttack);
+
+      if (this.plHasDamaged) return;
+
+      this.$refs.game.disablePcBoard();
+
+      do {
+        this.pcHasDamaged = this.makePcTurn();
+      } while (this.pcHasDamaged);
+
+      this.$refs.game.enablePcBoard();
     },
 
     makePlTurn(pcCordAttack) {
       const { x, y } = JSON.parse(pcCordAttack);
       const attackInfo = this.pl.attack({ player: this.pc, x, y });
       this.$refs.game.updatePcBoard(pcCordAttack, attackInfo);
+
+      return attackInfo === true || attackInfo.ship;
     },
 
     makePcTurn() {
       const { attackInfo, cord } = this.pc.attack({ player: this.pl });
       const { x, y } = cord;
       this.$refs.game.updatePlBoard(JSON.stringify({ x, y }), attackInfo);
+
+      return attackInfo === true || attackInfo.ship;
     },
   },
 };
