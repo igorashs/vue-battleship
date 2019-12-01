@@ -88,11 +88,17 @@ export default {
 
       this.$refs.game.disablePcBoard();
 
-      do {
-        this.pcHasDamaged = this.makePcTurn();
-      } while (this.pcHasDamaged);
+      const delayPcTurn = (ms) => {
+        setTimeout(() => {
+          this.pcHasDamaged = this.makePcTurn();
 
-      this.$refs.game.enablePcBoard();
+          if (this.pcHasDamaged) delayPcTurn(ms);
+
+          this.$refs.game.enablePcBoard();
+        }, ms);
+      };
+
+      delayPcTurn(256);
     },
 
     makePlTurn(pcCordAttack) {
