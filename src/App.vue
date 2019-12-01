@@ -80,17 +80,20 @@ export default {
     },
 
     handleRound(pcCordAttack) {
-      {
-        const { x, y } = JSON.parse(pcCordAttack);
-        const attackInfo = this.pl.attack({ player: this.pc, x, y });
-        this.$refs.game.updatePcBoard(pcCordAttack, attackInfo);
-      }
+      this.makePlTurn(pcCordAttack);
+      this.makePcTurn();
+    },
 
-      {
-        const { attackInfo, cord } = this.pc.attack({ player: this.pl });
-        const { x, y } = cord;
-        this.$refs.game.updatePlBoard(JSON.stringify({ x, y }), attackInfo);
-      }
+    makePlTurn(pcCordAttack) {
+      const { x, y } = JSON.parse(pcCordAttack);
+      const attackInfo = this.pl.attack({ player: this.pc, x, y });
+      this.$refs.game.updatePcBoard(pcCordAttack, attackInfo);
+    },
+
+    makePcTurn() {
+      const { attackInfo, cord } = this.pc.attack({ player: this.pl });
+      const { x, y } = cord;
+      this.$refs.game.updatePlBoard(JSON.stringify({ x, y }), attackInfo);
     },
   },
 };
