@@ -105,6 +105,14 @@ export default {
         spot.append('*');
       }
     },
+
+    disablePcBoard() {
+      this.pcBoardElement.style.pointerEvents = 'none';
+    },
+
+    enablePcBoard() {
+      this.pcBoardElement.style.pointerEvents = 'auto';
+    },
   },
 };
 </script>
