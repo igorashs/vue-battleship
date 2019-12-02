@@ -14,30 +14,41 @@ export default {
   name: 'TheGame',
 
   data: () => ({
+    plElement: null,
+    pcElement: null,
     plBoardElement: null,
     pcBoardElement: null,
+    plBoardInfoElement: null,
+    pcBoardInfoElement: null,
+    pl: null,
+    pc: null,
   }),
 
   methods: {
-    initTheGame(plBoardElement, pcBoardElement) {
+    initTheGame(plBoardElement, pcBoardElement, pl, pc) {
+      this.plElement = document.querySelector('.pl');
+      this.pcElement = document.querySelector('.pc');
       this.plBoardElement = plBoardElement;
       this.pcBoardElement = pcBoardElement;
+      this.pl = pl;
+      this.pc = pc;
 
       this.renderTheBoards();
+      this.renderTheBoardsInfo();
+      this.updateTheBoardsInfo();
       this.addPcBoardEvent();
     },
 
     renderTheBoards() {
-      const pl = document.querySelector('.pl');
-      pl.appendChild(this.plBoardElement);
-
-      const pc = document.querySelector('.pc');
-      pc.appendChild(this.pcBoardElement);
+      this.plElement.appendChild(this.plBoardElement);
+      this.pcElement.appendChild(this.pcBoardElement);
     },
 
     resetTheGame() {
       if (this.plBoardElement) this.plBoardElement.remove();
       if (this.pcBoardElement) this.pcBoardElement.remove();
+      if (this.plBoardInfoElement) this.plBoardInfoElement.remove();
+      if (this.pcBoardInfoElement) this.pcBoardInfoElement.remove();
     },
 
     addPcBoardEvent() {
@@ -106,6 +117,49 @@ export default {
       }
     },
 
+    updateTheBoardsInfo() {
+      const updateInfoFor = (player, boardInfoElement) => {
+        const nameEl = boardInfoElement.firstElementChild;
+        const aliveShipsEl = boardInfoElement.lastElementChild;
+        const name = player.getName();
+        const aliveShips = player.getBoard().getAliveShipsCount();
+
+        if (`${nameEl.textContent} Board` !== name) {
+          nameEl.textContent = `${name} Board`;
+        }
+
+        if (`Alive Ships: ${aliveShipsEl.textContent}` !== aliveShips) {
+          aliveShipsEl.textContent = `Alive Ships: ${aliveShips}`;
+        }
+      };
+
+      updateInfoFor(this.pl, this.plBoardInfoElement);
+      updateInfoFor(this.pc, this.pcBoardInfoElement);
+    },
+
+    renderTheBoardsInfo() {
+      const createBoardInfo = () => {
+        const infoElement = document.createElement('div');
+        const name = document.createElement('h3');
+        const aliveShips = document.createElement('h4');
+
+        infoElement.classList.add('board-info');
+        name.classList.add('name');
+        aliveShips.classList.add('alive-ships');
+
+        infoElement.appendChild(name);
+        infoElement.appendChild(aliveShips);
+
+        return infoElement;
+      };
+
+      this.plBoardInfoElement = createBoardInfo();
+      this.pcBoardInfoElement = createBoardInfo();
+
+      this.plElement.appendChild(this.plBoardInfoElement);
+      this.pcElement.appendChild(this.pcBoardInfoElement);
+    },
+
     disablePcBoard() {
       this.pcBoardElement.style.pointerEvents = 'none';
     },
@@ -118,6 +172,10 @@ export default {
 </script>
 
 <style scoped>
+* {
+  user-select: none;
+}
+
 .game-container {
   font-family: bfont;
   --spot-size: 4rem;
@@ -141,11 +199,6 @@ export default {
   text-shadow: 0 0 2px black;
   text-align: center;
   font-size: var(--spot-size);
-}
-
-.pc >>> .board-container,
-.pl >>> .board-container {
-  user-select: none;
 }
 
 .pc >>> .spot {
@@ -177,5 +230,31 @@ export default {
   text-align: center;
   font-size: var(--spot-size);
   line-height : 0.745;
+}
+
+.pc >>> .board-info,
+.pl >>> .board-info {
+  text-shadow: 0 0 2px black;
+  text-align: center;
+  padding-left: var(--spot-size);
+}
+
+.pl >>> .board-info {
+  color: rgb(43, 197, 87);
+}
+
+.pc >>> .board-info {
+  color: rgb(226, 54, 54);
+}
+
+.pc >>> .board-info .name,
+.pl >>> .board-info .name {
+  border-bottom: 1px solid;
+  font-size: 2.6rem;
+}
+
+.pc >>> .board-info .alive-ships,
+.pl >>> .board-info .alive-ships {
+  font-size: 2.4rem;
 }
 </style>
