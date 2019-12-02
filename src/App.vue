@@ -87,6 +87,7 @@ export default {
 
       if (this.plHasDamaged) return;
 
+      this.$refs.game.updateGameInfo('Pc Turn!', 'rgb(226, 54, 54)');
       this.$refs.game.disablePcBoard();
 
       const delayPcTurn = (ms) => {
@@ -94,13 +95,17 @@ export default {
           this.pcHasDamaged = this.makePcTurn();
           this.$refs.game.updateTheBoardsInfo();
 
-          if (this.pcHasDamaged) delayPcTurn(ms);
+          if (this.pcHasDamaged) {
+            delayPcTurn(ms);
+            return;
+          }
 
+          this.$refs.game.updateGameInfo('Your Turn!', 'rgb(43, 197, 87)');
           this.$refs.game.enablePcBoard();
         }, ms);
       };
 
-      delayPcTurn(256);
+      delayPcTurn(500);
     },
 
     makePlTurn(pcCordAttack) {

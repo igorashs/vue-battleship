@@ -3,6 +3,7 @@
     <div class="game-container">
       <div class="pl">
       </div>
+      <div class="game-info"></div>
       <div class="pc">
       </div>
     </div>
@@ -20,6 +21,7 @@ export default {
     pcBoardElement: null,
     plBoardInfoElement: null,
     pcBoardInfoElement: null,
+    gameInfo: null,
     pl: null,
     pc: null,
   }),
@@ -28,6 +30,7 @@ export default {
     initTheGame(plBoardElement, pcBoardElement, pl, pc) {
       this.plElement = document.querySelector('.pl');
       this.pcElement = document.querySelector('.pc');
+      this.gameInfo = document.querySelector('.game-info');
       this.plBoardElement = plBoardElement;
       this.pcBoardElement = pcBoardElement;
       this.pl = pl;
@@ -36,6 +39,7 @@ export default {
       this.renderTheBoards();
       this.renderTheBoardsInfo();
       this.updateTheBoardsInfo();
+      this.updateGameInfo('Your Turn!');
       this.addPcBoardEvent();
     },
 
@@ -45,6 +49,7 @@ export default {
     },
 
     resetTheGame() {
+      this.updateGameInfo('');
       if (this.plBoardElement) this.plBoardElement.remove();
       if (this.pcBoardElement) this.pcBoardElement.remove();
       if (this.plBoardInfoElement) this.plBoardInfoElement.remove();
@@ -160,6 +165,21 @@ export default {
       this.pcElement.appendChild(this.pcBoardInfoElement);
     },
 
+    updateGameInfo(msg, color = 'rgb(43, 197, 87)') {
+      this.gameInfo.textContent = msg;
+      this.gameInfo.style.color = color;
+
+      if (!this.gameInfo.classList.contains('pulse')) {
+        this.gameInfo.classList.add('pulse');
+        this.gameInfo.classList.add('top-bot-borders');
+      }
+
+      if (!msg) {
+        this.gameInfo.classList.remove('pulse');
+        this.gameInfo.classList.remove('top-bot-borders');
+      }
+    },
+
     disablePcBoard() {
       this.pcBoardElement.style.pointerEvents = 'none';
     },
@@ -256,5 +276,32 @@ export default {
 .pc >>> .board-info .alive-ships,
 .pl >>> .board-info .alive-ships {
   font-size: 2.4rem;
+}
+
+.game-info {
+  font-size: 3.0rem;
+  align-self: center;
+  text-align: center;
+  text-shadow: 0 0 6px black;
+  width: 100%;
+}
+
+.top-bot-borders {
+  padding: 1rem;
+  margin: 1rem;
+  border-top: 1px solid;
+  border-bottom: 1px solid;
+}
+
+.pulse {
+  animation: pulse 500ms alternate infinite;
+}
+
+@keyframes pulse {
+   100% {
+    box-shadow: inset 0 0 2px 1px rgb(82, 82, 82),
+      0 0 2px 1px rgb(255, 255, 255);
+    color: rgb(255, 255, 255);
+  }
 }
 </style>
