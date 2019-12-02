@@ -39,6 +39,7 @@ const createPlayer = ({ name = '', board, isPc = false } = {}) => {
 
   return {
     getName: () => playerName,
+    getBoard: () => ({ ...board }),
     attack,
     receiveAttack,
   };
