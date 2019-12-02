@@ -411,7 +411,7 @@ export default {
 .tip-ico {
   font-size: 36px;
   color: rgb(255, 255, 0);
-  animation: pulse 250ms 3s 12 alternate;
+  animation: pulse 250ms 3s 6 alternate;
   cursor: pointer;
   border-radius: 50%;
 }
