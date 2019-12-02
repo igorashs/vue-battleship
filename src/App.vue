@@ -78,11 +78,12 @@ export default {
       this.pl = createPlayer({ board: plBoard });
       this.pc = createPlayer({ board: pcBoard, isPc: true });
 
-      this.$refs.game.initTheGame(plBoardElement, pcBoardElement);
+      this.$refs.game.initTheGame(plBoardElement, pcBoardElement, this.pl, this.pc);
     },
 
     handleRound(pcCordAttack) {
       this.plHasDamaged = this.makePlTurn(pcCordAttack);
+      this.$refs.game.updateTheBoardsInfo();
 
       if (this.plHasDamaged) return;
 
@@ -91,6 +92,7 @@ export default {
       const delayPcTurn = (ms) => {
         setTimeout(() => {
           this.pcHasDamaged = this.makePcTurn();
+          this.$refs.game.updateTheBoardsInfo();
 
           if (this.pcHasDamaged) delayPcTurn(ms);
 
