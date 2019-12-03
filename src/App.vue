@@ -10,6 +10,7 @@
         :isOpen="isGameMenuOpen"
         :options="gameMenuOptions"
         @start-new-game="handleNewGame"
+        @resume-game="handleResumeGame"
       />
       <TheGameBoardRedactor :isOpen="isGameBoardRedactorOpen" @start-game="handleStartGame"/>
     </v-content>
@@ -75,6 +76,10 @@ export default {
       this.$refs.game.resetTheGame();
     },
 
+    handleResumeGame() {
+      this.hideGameMenu();
+    },
+
     handleStartGame(plBoard, plBoardElement, pcBoard, pcBoardElement) {
       this.closeGameBoardRedactor();
 
@@ -107,7 +112,7 @@ export default {
             this.pcHasDamaged = this.makePcTurn();
             this.$refs.game.updateTheBoardsInfo();
 
-            if (!this.pl.getBoard().isAllShipsSunk()) {
+            if (this.pl.getBoard().isAllShipsSunk()) {
               this.gameHasAwinner = true;
               this.gameMenuOptions.resume.isDisabled = true;
               this.$refs.game.updateGameInfo('Pc won The Game!', 'rgb(226, 54, 54)');
