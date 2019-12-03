@@ -56,6 +56,8 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-color: rgba(34, 34, 34, 0.8);
+  box-shadow: inset 0 0 2px 2px rgb(56, 56, 56);
 }
 
 .source {
