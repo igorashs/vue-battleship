@@ -197,10 +197,6 @@ export default {
 </script>
 
 <style scoped>
-* {
-  user-select: none;
-}
-
 .game-container {
   font-family: bfont;
   --spot-size: 4rem;
