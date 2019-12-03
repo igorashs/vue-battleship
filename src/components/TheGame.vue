@@ -78,6 +78,7 @@ export default {
         spot.style.backgroundColor = 'rgb(248, 39, 39)';
         spot.style.lineHeight = '1';
         spot.style.pointerEvents = 'none';
+        spot.classList.toggle('resize');
       }
 
       if (response === false) {
@@ -86,6 +87,7 @@ export default {
 
         spot.append('*');
         spot.style.pointerEvents = 'none';
+        spot.classList.toggle('resize');
       }
 
       if (response.ship) {
@@ -98,6 +100,8 @@ export default {
           part.append('x');
           ship.appendChild(part);
         }
+
+        ship.classList.toggle('resize');
 
         const firstSpot = this.pcBoardElement
           .querySelector(`.spot[data-cord=${JSON.stringify(JSON.stringify(response.cords[0]))}]`);
@@ -117,6 +121,7 @@ export default {
 
         part.append('x');
         part.style.backgroundColor = 'rgb(218, 100, 100)';
+        part.classList.toggle('resize');
       }
 
       if (response === false) {
@@ -124,6 +129,7 @@ export default {
           .querySelector(`.spot[data-cord=${JSON.stringify(cord)}]`);
 
         spot.append('*');
+        spot.classList.toggle('resize');
       }
     },
 
@@ -298,11 +304,23 @@ export default {
   animation: pulse 500ms alternate infinite;
 }
 
+.pc >>> .resize,
+.pl >>> .resize {
+  animation: resize 200ms 1 reverse;
+}
+
 @keyframes pulse {
    100% {
     box-shadow: inset 0 0 2px 1px rgb(82, 82, 82),
       0 0 2px 1px rgb(255, 255, 255);
     color: rgb(255, 255, 255);
+  }
+}
+
+@keyframes resize {
+  100% {
+    transform: scale(1.16);
+    background-color: rgb(226, 54, 54);;
   }
 }
 </style>
