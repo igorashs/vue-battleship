@@ -4,7 +4,11 @@
       <button class="btn" @click="$emit('start-new-game')">
         New Game
       </button>
-      <button class="btn" :class="{ disable: options.resume.isDisabled }">
+      <button
+        class="btn"
+        :class="{ disable: options.resume.isDisabled }"
+        @click="$emit('resume-game')"
+      >
         Resume
       </button>
       <button class="btn source" @click="handleOpenRepo">
