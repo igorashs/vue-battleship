@@ -46,6 +46,7 @@ export default {
     pc: null,
     plHasDamaged: false,
     pcHasDamaged: false,
+    gameHasAwinner: false,
   }),
 
   methods: {
@@ -66,9 +67,10 @@ export default {
     },
 
     handleNewGame() {
+      this.gameHasAwinner = false;
+
       this.hideGameMenu();
       this.openGameBoardRedactor();
-
       this.$refs.game.resetTheGame();
     },
 
@@ -82,30 +84,44 @@ export default {
     },
 
     handleRound(pcCordAttack) {
-      this.plHasDamaged = this.makePlTurn(pcCordAttack);
-      this.$refs.game.updateTheBoardsInfo();
+      if (!this.gameHasAwinner) {
+        this.plHasDamaged = this.makePlTurn(pcCordAttack);
+        this.$refs.game.updateTheBoardsInfo();
 
-      if (this.plHasDamaged) return;
+        if (this.pc.getBoard().isAllShipsSunk()) {
+          this.gameHasAwinner = true;
+          this.$refs.game.updateGameInfo('Congratulations you won The Game', 'rgb(43, 197, 87)');
+          return;
+        }
 
-      this.$refs.game.updateGameInfo('Pc Turn!', 'rgb(226, 54, 54)');
-      this.$refs.game.disablePcBoard();
+        if (this.plHasDamaged) return;
 
-      const delayPcTurn = (ms) => {
-        setTimeout(() => {
-          this.pcHasDamaged = this.makePcTurn();
-          this.$refs.game.updateTheBoardsInfo();
+        this.$refs.game.updateGameInfo('Pc Turn!', 'rgb(226, 54, 54)');
+        this.$refs.game.disablePcBoard();
 
-          if (this.pcHasDamaged) {
-            delayPcTurn(ms);
-            return;
-          }
+        const delayPcTurn = (ms) => {
+          setTimeout(() => {
+            this.pcHasDamaged = this.makePcTurn();
+            this.$refs.game.updateTheBoardsInfo();
 
-          this.$refs.game.updateGameInfo('Your Turn!', 'rgb(43, 197, 87)');
-          this.$refs.game.enablePcBoard();
-        }, ms);
-      };
+            if (this.pl.getBoard().isAllShipsSunk()) {
+              this.gameHasAwinner = true;
+              this.$refs.game.updateGameInfo('Pc won The Game!', 'rgb(226, 54, 54)');
+              return;
+            }
 
-      delayPcTurn(500);
+            if (this.pcHasDamaged) {
+              delayPcTurn(ms);
+              return;
+            }
+
+            this.$refs.game.updateGameInfo('Your Turn!', 'rgb(43, 197, 87)');
+            this.$refs.game.enablePcBoard();
+          }, ms);
+        };
+
+        delayPcTurn(500);
+      }
     },
 
     makePlTurn(pcCordAttack) {
