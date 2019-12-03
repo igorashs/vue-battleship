@@ -166,6 +166,7 @@ export default {
   margin: 0;
   box-sizing: border-box;
   font-size: inherit;
+  user-select: none !important;
 }
 
 html {
