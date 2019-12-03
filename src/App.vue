@@ -68,6 +68,7 @@ export default {
 
     handleNewGame() {
       this.gameHasAwinner = false;
+      this.gameMenuOptions.resume.isDisabled = false;
 
       this.hideGameMenu();
       this.openGameBoardRedactor();
@@ -90,7 +91,9 @@ export default {
 
         if (this.pc.getBoard().isAllShipsSunk()) {
           this.gameHasAwinner = true;
+          this.gameMenuOptions.resume.isDisabled = true;
           this.$refs.game.updateGameInfo('Congratulations you won The Game', 'rgb(43, 197, 87)');
+
           return;
         }
 
@@ -104,9 +107,11 @@ export default {
             this.pcHasDamaged = this.makePcTurn();
             this.$refs.game.updateTheBoardsInfo();
 
-            if (this.pl.getBoard().isAllShipsSunk()) {
+            if (!this.pl.getBoard().isAllShipsSunk()) {
               this.gameHasAwinner = true;
+              this.gameMenuOptions.resume.isDisabled = true;
               this.$refs.game.updateGameInfo('Pc won The Game!', 'rgb(226, 54, 54)');
+
               return;
             }
 
