@@ -15,6 +15,7 @@ export default {
   name: 'TheGame',
 
   data: () => ({
+    isGameInitiated: false,
     plElement: null,
     pcElement: null,
     plBoardElement: null,
@@ -41,6 +42,8 @@ export default {
       this.updateTheBoardsInfo();
       this.updateGameInfo('Your Turn!');
       this.addPcBoardEvent();
+
+      this.isGameInitiated = true;
     },
 
     renderTheBoards() {
@@ -49,11 +52,13 @@ export default {
     },
 
     resetTheGame() {
-      this.updateGameInfo('');
-      if (this.plBoardElement) this.plBoardElement.remove();
-      if (this.pcBoardElement) this.pcBoardElement.remove();
-      if (this.plBoardInfoElement) this.plBoardInfoElement.remove();
-      if (this.pcBoardInfoElement) this.pcBoardInfoElement.remove();
+      if (this.isGameInitiated) {
+        this.updateGameInfo('');
+        this.plBoardElement.remove();
+        this.pcBoardElement.remove();
+        this.plBoardInfoElement.remove();
+        this.pcBoardInfoElement.remove();
+      }
     },
 
     addPcBoardEvent() {
@@ -165,7 +170,7 @@ export default {
       this.pcElement.appendChild(this.pcBoardInfoElement);
     },
 
-    updateGameInfo(msg, color = 'rgb(43, 197, 87)') {
+    updateGameInfo(msg = '', color = 'rgb(43, 197, 87)') {
       this.gameInfo.textContent = msg;
       this.gameInfo.style.color = color;
 
