@@ -141,6 +141,7 @@ export default {
 
       // adds cords for each part of the ships
       ships.forEach((ship) => {
+        ship.removeAttribute('draggable');
         const isVertical = ship.dataset.position === 'x';
         const { x, y } = JSON.parse(ship.parentElement.dataset.cord);
 
