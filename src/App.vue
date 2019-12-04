@@ -139,7 +139,7 @@ export default {
       const attackInfo = this.pl.attack({ player: this.pc, x, y });
       this.$refs.game.updatePcBoard(pcCordAttack, attackInfo);
 
-      return attackInfo === true || attackInfo.ship;
+      return attackInfo === true || attackInfo.damagedShipData;
     },
 
     makePcTurn() {
@@ -147,7 +147,7 @@ export default {
       const { x, y } = cord;
       this.$refs.game.updatePlBoard(JSON.stringify({ x, y }), attackInfo);
 
-      return attackInfo === true || attackInfo.ship;
+      return attackInfo === true || attackInfo.damagedShipData;
     },
   },
 };
