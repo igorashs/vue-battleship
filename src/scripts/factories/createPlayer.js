@@ -1,4 +1,4 @@
-import { getRandomCord } from './createGameBoard';
+import { getRandomCord, isCordsValid } from './createGameBoard';
 
 const getValidName = (name, isPc) => {
   if (!name && !isPc) {
@@ -14,17 +14,146 @@ const getValidName = (name, isPc) => {
 
 const playerAttack = ({ player, x, y }) => player.receiveAttack({ x, y });
 
-// ! a dumb player who shoots in random places
+const tracker = {
+  isVertical: null,
+  adjacentCords: null,
+  backwardCord: null,
+  forwardCord: null,
+  initCord: null,
+  damagedShipsCords: null,
+};
+
 const pcAttack = ({ player }) => {
   let attackInfo;
   let x;
   let y;
 
   do {
-    x = getRandomCord();
-    y = getRandomCord();
-    attackInfo = player.receiveAttack({ x, y });
+    if (tracker.adjacentCords) {
+      const random = Math.floor(Math.random() * tracker.adjacentCords.length);
+      ({ x, y } = tracker.adjacentCords[random]);
+      attackInfo = player.receiveAttack({ x, y });
+
+      if (attackInfo === true) {
+        tracker.isVertical = tracker.initCord.y !== y;
+        const { initCord } = tracker;
+
+        tracker.backwardCord = { ...initCord };
+        tracker.forwardCord = { ...initCord };
+
+        tracker.damagedShipsCords.push({ x, y });
+        tracker.adjacentCords = null;
+      }
+    } else if (tracker.backwardCord) {
+      ({ x, y } = tracker.backwardCord);
+
+      if (tracker.isVertical) {
+        y -= 1;
+
+        // eslint-disable-next-line no-loop-func
+        if (tracker.damagedShipsCords.find((c) => (c.x === x && c.y === y))) {
+          y -= 1;
+        }
+      } else {
+        x -= 1;
+
+        // eslint-disable-next-line no-loop-func
+        if (tracker.damagedShipsCords.find((c) => (c.x === x && c.y === y))) {
+          x -= 1;
+        }
+      }
+
+      if (isCordsValid({ x, y })) {
+        tracker.backwardCord = { x, y };
+        attackInfo = player.receiveAttack({ x, y });
+
+        if (attackInfo === true) {
+          tracker.damagedShipsCords.push({ x, y });
+        }
+      } else {
+        tracker.backwardCord = null;
+        attackInfo = '*';
+      }
+
+      if (attackInfo === '*' || attackInfo === false) {
+        tracker.backwardCord = null;
+      }
+    } else if (tracker.forwardCord) {
+      ({ x, y } = tracker.forwardCord);
+
+      if (tracker.isVertical) {
+        y += 1;
+
+        // eslint-disable-next-line no-loop-func
+        if (tracker.damagedShipsCords.find((c) => (c.x === x && c.y === y))) {
+          y += 1;
+        }
+      } else {
+        x += 1;
+
+        // eslint-disable-next-line no-loop-func
+        if (tracker.damagedShipsCords.find((c) => (c.x === x && c.y === y))) {
+          x += 1;
+        }
+      }
+
+      if (isCordsValid({ x, y })) {
+        tracker.forwardCord = { x, y };
+        attackInfo = player.receiveAttack({ x, y });
+
+        if (attackInfo === true) {
+          tracker.damagedShipsCords.push({ x, y });
+        }
+      } else {
+        tracker.forwardCord = null;
+        attackInfo = '*';
+      }
+
+      if (attackInfo === '*' || attackInfo === false) {
+        tracker.forwardCord = null;
+      }
+    } else {
+      x = getRandomCord();
+      y = getRandomCord();
+      attackInfo = player.receiveAttack({ x, y });
+    }
   } while (attackInfo === '*');
+
+  if (attackInfo === true
+    && !tracker.backwardCord
+    && !tracker.forwardCord
+    && !tracker.adjacentCords
+  ) {
+    tracker.initCord = { x, y };
+    tracker.damagedShipsCords = [];
+    tracker.adjacentCords = [];
+    tracker.damagedShipsCords.push({ x, y });
+
+    if (isCordsValid({ x: x - 1, y })) {
+      tracker.adjacentCords.push({ x: x - 1, y });
+    }
+
+    if (isCordsValid({ x: x + 1, y })) {
+      tracker.adjacentCords.push({ x: x + 1, y });
+    }
+
+    if (isCordsValid({ x, y: y - 1 })) {
+      tracker.adjacentCords.push({ x, y: y - 1 });
+    }
+
+    if (isCordsValid({ x, y: y + 1 })) {
+      tracker.adjacentCords.push({ x, y: y + 1 });
+    }
+  }
+
+  if (attackInfo.damagedShipData) {
+    tracker.isVertical = null;
+    tracker.adjacentCords = null;
+    tracker.backwardCord = null;
+    tracker.forwardCord = null;
+    tracker.initCord = null;
+    tracker.damagedShipsCords = null;
+  }
 
   return { attackInfo, cord: { x, y } };
 };
