@@ -26,6 +26,8 @@ const isCordsValid = ({ x, y }) => {
   return validateCord(x) && validateCord(y);
 };
 
+export { isCordsValid };
+
 const isShipPlaceable = (start, end, board, isVertical) => {
   // vertical position
   if (isVertical) {
