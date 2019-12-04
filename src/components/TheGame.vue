@@ -90,11 +90,12 @@ export default {
         spot.classList.toggle('resize');
       }
 
-      if (response.ship) {
+      if (response.damagedShipData) {
+        const { damagedShipData, clearedBorders } = response;
         const ship = document.createElement('div');
         ship.classList.add('ship');
 
-        for (let i = 0; i < response.ship.getLength(); i += 1) {
+        for (let i = 0; i < damagedShipData.ship.getLength(); i += 1) {
           const part = document.createElement('div');
           part.classList.add('part');
           part.append('x');
@@ -104,24 +105,49 @@ export default {
         ship.classList.toggle('resize');
 
         const firstSpot = this.pcBoardElement
-          .querySelector(`.spot[data-cord=${JSON.stringify(JSON.stringify(response.cords[0]))}]`);
+          .querySelector(`.spot[data-cord=${JSON.stringify(JSON.stringify(damagedShipData.cords[0]))}]`);
 
-        ship.style['grid-auto-flow'] = response.isVertical ? 'row' : 'column';
+        ship.style['grid-auto-flow'] = damagedShipData.isVertical ? 'row' : 'column';
         ship.style.position = 'absolute';
 
         if (firstSpot.firstChild) firstSpot.firstChild.remove();
         firstSpot.appendChild(ship);
+
+        clearedBorders.forEach((borderCord) => {
+          const spotEl = this.pcBoardElement
+            .querySelector(`.spot[data-cord=${JSON.stringify(JSON.stringify(borderCord))}]`);
+
+          if (!spotEl.firstChild) {
+            spotEl.append('*');
+            spotEl.style.pointerEvents = 'none';
+            spotEl.classList.toggle('resize');
+          }
+        });
       }
     },
 
     updatePlBoard(cord, response) {
-      if (response === true || response.ship) {
+      if (response === true || response.damagedShipData) {
         const part = this.plBoardElement
           .querySelector(`.part[data-cord=${JSON.stringify(cord)}]`);
 
         part.append('x');
         part.style.backgroundColor = 'rgb(218, 100, 100)';
         part.classList.toggle('resize');
+
+        if (response.damagedShipData) {
+          const { clearedBorders } = response;
+
+          clearedBorders.forEach((borderCord) => {
+            const spotEl = this.plBoardElement
+              .querySelector(`.spot[data-cord=${JSON.stringify(JSON.stringify(borderCord))}]`);
+
+            if (!spotEl.firstChild) {
+              spotEl.append('*');
+              spotEl.classList.toggle('resize');
+            }
+          });
+        }
       }
 
       if (response === false) {
