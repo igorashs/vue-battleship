@@ -345,6 +345,8 @@ const removeShipBorders = (shipData, board) => {
   const startPoint = { x, y };
   const newBoard = JSON.parse(JSON.stringify(board));
 
+  const clearedBorders = [];
+
   // vertical position
   if (isVertical) {
     const endPoint = { x, y: y + ship.getLength() - 1 };
@@ -353,6 +355,7 @@ const removeShipBorders = (shipData, board) => {
     for (let i = startPoint.y - 1; i <= endPoint.y + 1; i += 1) {
       if (isCordsValid({ x: startPoint.x - 1, y: i })) {
         newBoard[startPoint.x - 1][i] = '*';
+        clearedBorders.push({ x: startPoint.x - 1, y: i });
       }
     }
 
@@ -360,20 +363,23 @@ const removeShipBorders = (shipData, board) => {
     for (let i = startPoint.y - 1; i <= endPoint.y + 1; i += 1) {
       if (isCordsValid({ x: startPoint.x + 1, y: i })) {
         newBoard[startPoint.x + 1][i] = '*';
+        clearedBorders.push({ x: startPoint.x + 1, y: i });
       }
     }
 
     // remove the top border
     if (isCordsValid({ x: startPoint.x, y: startPoint.y - 1 })) {
       newBoard[startPoint.x][startPoint.y - 1] = '*';
+      clearedBorders.push({ x: startPoint.x, y: startPoint.y - 1 });
     }
 
     // remove the bottom border
     if (isCordsValid({ x: startPoint.x, y: endPoint.y + 1 })) {
       newBoard[startPoint.x][endPoint.y + 1] = '*';
+      clearedBorders.push({ x: startPoint.x, y: endPoint.y + 1 });
     }
 
-    return newBoard;
+    return { newBoard, clearedBorders };
   }
 
   // horizontal position
@@ -383,6 +389,7 @@ const removeShipBorders = (shipData, board) => {
   for (let i = startPoint.x - 1; i <= endPoint.x + 1; i += 1) {
     if (isCordsValid({ x: i, y: startPoint.y - 1 })) {
       newBoard[i][startPoint.y - 1] = '*';
+      clearedBorders.push({ x: i, y: startPoint.y - 1 });
     }
   }
 
@@ -390,20 +397,23 @@ const removeShipBorders = (shipData, board) => {
   for (let i = startPoint.x - 1; i <= endPoint.x + 1; i += 1) {
     if (isCordsValid({ x: i, y: startPoint.y + 1 })) {
       newBoard[i][startPoint.y + 1] = '*';
+      clearedBorders.push({ x: i, y: startPoint.y + 1 });
     }
   }
 
   // remove the left border
   if (isCordsValid({ x: startPoint.x - 1, y: startPoint.y })) {
     newBoard[startPoint.x - 1][startPoint.y] = '*';
+    clearedBorders.push({ x: startPoint.x - 1, y: startPoint.y });
   }
 
   // remove the right border
   if (isCordsValid({ x: endPoint.x + 1, y: startPoint.y })) {
     newBoard[endPoint.x + 1][startPoint.y] = '*';
+    clearedBorders.push({ x: endPoint.x + 1, y: startPoint.y });
   }
 
-  return newBoard;
+  return { newBoard, clearedBorders };
 };
 
 const getRandomCord = () => Math.floor(Math.random() * (MAX_CORD_RANGE + 1));
@@ -536,9 +546,10 @@ const createGameBoard = () => {
           if (damagedShipData.ship.hitAt({ position: damagedPosition + 1 }).isSunk()) {
             sunkShips += 1;
             board[x][y] = 'x';
-            board = removeShipBorders(damagedShipData, board);
+            const { newBoard, clearedBorders } = removeShipBorders(damagedShipData, board);
+            board = newBoard;
 
-            return damagedShipData;
+            return { damagedShipData, clearedBorders };
           }
 
           board[x][y] = 'x';
