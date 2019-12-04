@@ -339,6 +339,73 @@ const removeShipFromBoard = (shipData, board) => {
   return newBoard;
 };
 
+const removeShipBorders = (shipData, board) => {
+  const { ship, isVertical } = shipData;
+  const { x, y } = shipData.cords[0];
+  const startPoint = { x, y };
+  const newBoard = JSON.parse(JSON.stringify(board));
+
+  // vertical position
+  if (isVertical) {
+    const endPoint = { x, y: y + ship.getLength() - 1 };
+
+    // remove the left border
+    for (let i = startPoint.y - 1; i <= endPoint.y + 1; i += 1) {
+      if (isCordsValid({ x: startPoint.x - 1, y: i })) {
+        newBoard[startPoint.x - 1][i] = '*';
+      }
+    }
+
+    // remove the right border
+    for (let i = startPoint.y - 1; i <= endPoint.y + 1; i += 1) {
+      if (isCordsValid({ x: startPoint.x + 1, y: i })) {
+        newBoard[startPoint.x + 1][i] = '*';
+      }
+    }
+
+    // remove the top border
+    if (isCordsValid({ x: startPoint.x, y: startPoint.y - 1 })) {
+      newBoard[startPoint.x][startPoint.y - 1] = '*';
+    }
+
+    // remove the bottom border
+    if (isCordsValid({ x: startPoint.x, y: endPoint.y + 1 })) {
+      newBoard[startPoint.x][endPoint.y + 1] = '*';
+    }
+
+    return newBoard;
+  }
+
+  // horizontal position
+  const endPoint = { x: x + ship.getLength() - 1, y };
+
+  // remove the top border
+  for (let i = startPoint.x - 1; i <= endPoint.x + 1; i += 1) {
+    if (isCordsValid({ x: i, y: startPoint.y - 1 })) {
+      newBoard[i][startPoint.y - 1] = '*';
+    }
+  }
+
+  // remove the bottom border
+  for (let i = startPoint.x - 1; i <= endPoint.x + 1; i += 1) {
+    if (isCordsValid({ x: i, y: startPoint.y + 1 })) {
+      newBoard[i][startPoint.y + 1] = '*';
+    }
+  }
+
+  // remove the left border
+  if (isCordsValid({ x: startPoint.x - 1, y: startPoint.y })) {
+    newBoard[startPoint.x - 1][startPoint.y] = '*';
+  }
+
+  // remove the right border
+  if (isCordsValid({ x: endPoint.x + 1, y: startPoint.y })) {
+    newBoard[endPoint.x + 1][startPoint.y] = '*';
+  }
+
+  return newBoard;
+};
+
 const getRandomCord = () => Math.floor(Math.random() * (MAX_CORD_RANGE + 1));
 
 const getRandomPosition = () => !!Math.floor(Math.random() * 2);
@@ -469,6 +536,7 @@ const createGameBoard = () => {
           if (damagedShipData.ship.hitAt({ position: damagedPosition + 1 }).isSunk()) {
             sunkShips += 1;
             board[x][y] = 'x';
+            board = removeShipBorders(damagedShipData, board);
 
             return damagedShipData;
           }
