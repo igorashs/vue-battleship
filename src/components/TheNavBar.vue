@@ -2,7 +2,7 @@
   <nav>
     <button class="menu" @click="$emit('show-game-menu')">Menu</button>
     <h1 class="logo">Battleship</h1>
-    <button @click="handleOpenRepo">
+    <button class="github-icon" @click="handleOpenRepo">
       <v-icon large>mdi-github-circle</v-icon>
     </button>
   </nav>
@@ -22,7 +22,7 @@ export default {
 
 <style scoped>
 nav {
-  height: 100px;
+  height: 10rem;
   background-color: rgb(61, 61, 61);
   display: flex;
   justify-content: center;
@@ -32,7 +32,7 @@ nav {
 nav h1 {
   text-align: left;
   font-family: bfont;
-  font-size: 4.8rem;
+  font-size: 4rem;
   text-shadow: 0 2px 2px black;
   flex: 1;
 }
@@ -61,12 +61,18 @@ nav button:focus {
   height: auto;
   border-radius: 2px;
   padding: 0 0.5rem;
-  font-size: 3.2rem;
+  font-size: 3rem;
 }
 
 @keyframes pulse {
   100% {
     box-shadow: 0 0px 5px 1px rgb(0, 255, 213);
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .github-icon {
+    display: none !important;
   }
 }
 </style>

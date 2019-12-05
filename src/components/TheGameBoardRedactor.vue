@@ -413,7 +413,7 @@ export default {
 }
 
 .tip-ico {
-  font-size: 36px;
+  font-size: 3.6rem;
   color: rgb(255, 255, 0);
   animation: pulse 250ms 3s 6 alternate;
   border-radius: 50%;
@@ -464,5 +464,52 @@ export default {
 .disable {
   pointer-events: none;
   color: rgb(117, 117, 117);
+}
+
+@media screen and (max-width: 860px) {
+  .board, .ship {
+    grid-gap: 2px;
+  }
+
+  .board {
+    grid-gap: 2px;
+    border-width: 2px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .ship-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .selection {
+    padding: 2rem 0;
+  }
+}
+
+@media screen and (max-width: 572px) {
+  .redactor {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .board, .ship {
+    grid-gap: 1px;
+  }
+
+  .board {
+    grid-gap: 1px;
+    border-width: 1px;
+  }
+}
+
+@media screen and (max-width: 359px) {
+  .ship .part {
+    border-width: 1px;
+  }
 }
 </style>

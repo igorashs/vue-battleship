@@ -39,7 +39,7 @@ export default {
 <style scoped>
 .btn {
   margin: 2rem;
-  font-size: 3.2rem;
+  font-size: 3rem;
   font-family: bfont;
   outline: none;
   text-shadow: 0 2px 2px black;

@@ -172,4 +172,28 @@ export default {
 html {
   font-size: 10px !important;
 }
+
+@media screen and (max-width: 860px) {
+  html {
+    font-size: 7px !important;
+  }
+}
+
+@media screen and (max-width: 410px) {
+  html {
+    font-size: 6px !important;
+  }
+}
+
+@media screen and (max-width: 359) {
+  html {
+    font-size: 5px !important;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  html {
+    font-size: 4px !important;
+  }
+}
 </style>

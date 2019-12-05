@@ -349,4 +349,78 @@ export default {
     background-color: rgb(226, 54, 54);;
   }
 }
+
+@media screen and (max-width: 1400px) {
+  .pc >>> .board-info .alive-ships,
+  .pl >>> .board-info .alive-ships {
+    font-size: 1.8rem;
+  }
+
+  .game-info {
+    font-size: 2.2rem;
+    padding: 0.4rem;
+  }
+
+  .pc >>> .board-info .name,
+  .pl >>> .board-info .name {
+    font-size: 2rem;
+  }
+}
+
+@media screen and (max-width: 1280px) {
+  .game-container {
+    padding: 1rem;
+    display: grid;
+    grid-auto-columns: auto auto;
+    grid-auto-rows: auto auto;
+  }
+
+  .game-info {
+    grid-column: 1 / 3;
+    order: -1;
+  }
+
+}
+
+@media screen and (max-width: 1000px) {
+  .pc >>> .spot .ship {
+    grid-gap: 2px;
+  }
+
+  .pc >>> .spot .part ,
+  .pl >>> .spot .part {
+    line-height : 0.7;
+  }
+
+  .game-info {
+    order: 0;
+  }
+
+  .game-container {
+    justify-content: center;
+  }
+}
+
+@media screen and (max-width: 820px) {
+  .game-container {
+    padding: 2rem;
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+@media screen and (max-width: 359px) {
+  .pc >>> .spot .ship {
+    grid-gap: 1px;
+  }
+
+  .pc >>> .spot .part {
+    border-width: 1px;
+  }
+
+  .pc >>> .spot .part ,
+  .pl >>> .spot .part {
+    line-height : 0.9;
+  }
+}
 </style>
