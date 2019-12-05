@@ -21,6 +21,7 @@ const tracker = {
   forwardCord: null,
   initCord: null,
   damagedShipsCords: null,
+  isBackWardFirst: null,
 };
 
 const pcAttack = ({ player }) => {
@@ -112,13 +113,14 @@ const pcAttack = ({ player }) => {
 
         tracker.backwardCord = { ...initCord };
         tracker.forwardCord = { ...initCord };
+        tracker.isBackWardFirst = Math.floor(Math.random() * 2) === 1;
 
         tracker.damagedShipsCords.push({ x, y });
         tracker.adjacentCords = null;
       }
-    } else if (tracker.backwardCord) {
+    } else if (tracker.backwardCord && (tracker.isBackWardFirst || !tracker.forwardCord)) {
       makeBackwardAttack();
-    } else if (tracker.forwardCord) {
+    } else if (tracker.forwardCord && (!tracker.isBackWardFirst || !tracker.backwardCord)) {
       makeForwardAttack();
     } else {
       x = getRandomCord();
@@ -161,6 +163,7 @@ const pcAttack = ({ player }) => {
     tracker.forwardCord = null;
     tracker.initCord = null;
     tracker.damagedShipsCords = null;
+    tracker.isBackWardFirst = null;
   }
 
   return { attackInfo, cord: { x, y } };
