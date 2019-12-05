@@ -211,7 +211,8 @@ describe('createGameBoard', () => {
     expect(gameBoard.receiveAttack({ x: 0, y: 0 })).toBe(true);
     expect(gameBoard.receiveAttack({ x: 1, y: 0 })).toBe(true);
     expect(gameBoard.receiveAttack({ x: 2, y: 0 })).toBe(true);
-    expect(gameBoard.receiveAttack({ x: 3, y: 0 }).ship.isSunk()).toBe(true);
+    expect(gameBoard.receiveAttack({ x: 3, y: 0 })
+      .damagedShipData.ship.isSunk()).toBe(true);
 
     expect(gameBoard.isAllShipsSunk()).toBe(false);
     expect(gameBoard.getAliveShipsCount()).toBe(9);
@@ -219,28 +220,37 @@ describe('createGameBoard', () => {
     // sink 3len ships
     expect(gameBoard.receiveAttack({ x: 0, y: 2 })).toBe(true);
     expect(gameBoard.receiveAttack({ x: 1, y: 2 })).toBe(true);
-    expect(gameBoard.receiveAttack({ x: 2, y: 2 }).ship.isSunk()).toBe(true);
+    expect(gameBoard.receiveAttack({ x: 2, y: 2 })
+      .damagedShipData.ship.isSunk()).toBe(true);
 
     expect(gameBoard.receiveAttack({ x: 0, y: 4 })).toBe(true);
     expect(gameBoard.receiveAttack({ x: 1, y: 4 })).toBe(true);
-    expect(gameBoard.receiveAttack({ x: 2, y: 4 }).ship.isSunk()).toBe(true);
+    expect(gameBoard.receiveAttack({ x: 2, y: 4 })
+      .damagedShipData.ship.isSunk()).toBe(true);
 
     // sink 2len ships
 
     expect(gameBoard.receiveAttack({ x: 0, y: 6 })).toBe(true);
-    expect(gameBoard.receiveAttack({ x: 1, y: 6 }).ship.isSunk()).toBe(true);
+    expect(gameBoard.receiveAttack({ x: 1, y: 6 })
+      .damagedShipData.ship.isSunk()).toBe(true);
 
     expect(gameBoard.receiveAttack({ x: 0, y: 8 })).toBe(true);
-    expect(gameBoard.receiveAttack({ x: 1, y: 8 }).ship.isSunk()).toBe(true);
+    expect(gameBoard.receiveAttack({ x: 1, y: 8 })
+      .damagedShipData.ship.isSunk()).toBe(true);
 
     expect(gameBoard.receiveAttack({ x: 6, y: 0 })).toBe(true);
-    expect(gameBoard.receiveAttack({ x: 7, y: 0 }).ship.isSunk()).toBe(true);
+    expect(gameBoard.receiveAttack({ x: 7, y: 0 })
+      .damagedShipData.ship.isSunk()).toBe(true);
 
     // sink 1len ships
-    expect(gameBoard.receiveAttack({ x: 6, y: 2 }).ship.isSunk()).toBe(true);
-    expect(gameBoard.receiveAttack({ x: 6, y: 4 }).ship.isSunk()).toBe(true);
-    expect(gameBoard.receiveAttack({ x: 6, y: 6 }).ship.isSunk()).toBe(true);
-    expect(gameBoard.receiveAttack({ x: 6, y: 8 }).ship.isSunk()).toBe(true);
+    expect(gameBoard.receiveAttack({ x: 6, y: 2 })
+      .damagedShipData.ship.isSunk()).toBe(true);
+    expect(gameBoard.receiveAttack({ x: 6, y: 4 })
+      .damagedShipData.ship.isSunk()).toBe(true);
+    expect(gameBoard.receiveAttack({ x: 6, y: 6 })
+      .damagedShipData.ship.isSunk()).toBe(true);
+    expect(gameBoard.receiveAttack({ x: 6, y: 8 })
+      .damagedShipData.ship.isSunk()).toBe(true);
 
     expect(gameBoard.isAllShipsSunk()).toBe(true);
     expect(gameBoard.getAliveShipsCount()).toBe(0);
