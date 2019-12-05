@@ -28,6 +28,78 @@ const pcAttack = ({ player }) => {
   let x;
   let y;
 
+  const makeBackwardAttack = () => {
+    ({ x, y } = tracker.backwardCord);
+
+    if (tracker.isVertical) {
+      y -= 1;
+
+      // eslint-disable-next-line no-loop-func
+      if (tracker.damagedShipsCords.find((c) => (c.x === x && c.y === y))) {
+        y -= 1;
+      }
+    } else {
+      x -= 1;
+
+      // eslint-disable-next-line no-loop-func
+      if (tracker.damagedShipsCords.find((c) => (c.x === x && c.y === y))) {
+        x -= 1;
+      }
+    }
+
+    if (isCordsValid({ x, y })) {
+      tracker.backwardCord = { x, y };
+      attackInfo = player.receiveAttack({ x, y });
+
+      if (attackInfo === true) {
+        tracker.damagedShipsCords.push({ x, y });
+      }
+    } else {
+      tracker.backwardCord = null;
+      attackInfo = '*';
+    }
+
+    if (attackInfo === '*' || attackInfo === false) {
+      tracker.backwardCord = null;
+    }
+  };
+
+  const makeForwardAttack = () => {
+    ({ x, y } = tracker.forwardCord);
+
+    if (tracker.isVertical) {
+      y += 1;
+
+      // eslint-disable-next-line no-loop-func
+      if (tracker.damagedShipsCords.find((c) => (c.x === x && c.y === y))) {
+        y += 1;
+      }
+    } else {
+      x += 1;
+
+      // eslint-disable-next-line no-loop-func
+      if (tracker.damagedShipsCords.find((c) => (c.x === x && c.y === y))) {
+        x += 1;
+      }
+    }
+
+    if (isCordsValid({ x, y })) {
+      tracker.forwardCord = { x, y };
+      attackInfo = player.receiveAttack({ x, y });
+
+      if (attackInfo === true) {
+        tracker.damagedShipsCords.push({ x, y });
+      }
+    } else {
+      tracker.forwardCord = null;
+      attackInfo = '*';
+    }
+
+    if (attackInfo === '*' || attackInfo === false) {
+      tracker.forwardCord = null;
+    }
+  };
+
   do {
     if (tracker.adjacentCords) {
       const random = Math.floor(Math.random() * tracker.adjacentCords.length);
@@ -45,73 +117,9 @@ const pcAttack = ({ player }) => {
         tracker.adjacentCords = null;
       }
     } else if (tracker.backwardCord) {
-      ({ x, y } = tracker.backwardCord);
-
-      if (tracker.isVertical) {
-        y -= 1;
-
-        // eslint-disable-next-line no-loop-func
-        if (tracker.damagedShipsCords.find((c) => (c.x === x && c.y === y))) {
-          y -= 1;
-        }
-      } else {
-        x -= 1;
-
-        // eslint-disable-next-line no-loop-func
-        if (tracker.damagedShipsCords.find((c) => (c.x === x && c.y === y))) {
-          x -= 1;
-        }
-      }
-
-      if (isCordsValid({ x, y })) {
-        tracker.backwardCord = { x, y };
-        attackInfo = player.receiveAttack({ x, y });
-
-        if (attackInfo === true) {
-          tracker.damagedShipsCords.push({ x, y });
-        }
-      } else {
-        tracker.backwardCord = null;
-        attackInfo = '*';
-      }
-
-      if (attackInfo === '*' || attackInfo === false) {
-        tracker.backwardCord = null;
-      }
+      makeBackwardAttack();
     } else if (tracker.forwardCord) {
-      ({ x, y } = tracker.forwardCord);
-
-      if (tracker.isVertical) {
-        y += 1;
-
-        // eslint-disable-next-line no-loop-func
-        if (tracker.damagedShipsCords.find((c) => (c.x === x && c.y === y))) {
-          y += 1;
-        }
-      } else {
-        x += 1;
-
-        // eslint-disable-next-line no-loop-func
-        if (tracker.damagedShipsCords.find((c) => (c.x === x && c.y === y))) {
-          x += 1;
-        }
-      }
-
-      if (isCordsValid({ x, y })) {
-        tracker.forwardCord = { x, y };
-        attackInfo = player.receiveAttack({ x, y });
-
-        if (attackInfo === true) {
-          tracker.damagedShipsCords.push({ x, y });
-        }
-      } else {
-        tracker.forwardCord = null;
-        attackInfo = '*';
-      }
-
-      if (attackInfo === '*' || attackInfo === false) {
-        tracker.forwardCord = null;
-      }
+      makeForwardAttack();
     } else {
       x = getRandomCord();
       y = getRandomCord();
