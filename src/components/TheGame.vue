@@ -404,6 +404,7 @@ export default {
 @media screen and (max-width: 820px) {
   .game-container {
     padding: 2rem;
+    display: flex;
     flex-direction: column;
     align-items: center;
   }
