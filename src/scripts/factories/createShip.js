@@ -4,6 +4,7 @@ const MIN_LENGTH = 1;
 const trimLength = (length) => {
   if (length > MAX_LENGTH) return MAX_LENGTH;
   if (length < MIN_LENGTH) return MIN_LENGTH;
+
   return length;
 };
 
@@ -24,6 +25,7 @@ const createShip = ({ length }) => {
       if (isBetweenRange(position)) {
         lives[position - 1] = 'x';
       }
+
       return this;
     },
   };
