@@ -20,7 +20,7 @@ describe('createGameBoard', () => {
     expect(gameBoard.getAliveShipsCount()).toBe(1);
   });
 
-  it('return false if cords are not in a valid format', () => {
+  it('return false if the cords are not in a valid format', () => {
     const ship = createShip({ length: 1 });
 
     expect(createGameBoard().placeShipAt(ship, { x: 'D', y: 'c', isVertical: false })).toBe(false);
@@ -28,17 +28,17 @@ describe('createGameBoard', () => {
     expect(createGameBoard().placeShipAt(ship, { x: 4, y: '4', isVertical: false })).toBe(false);
   });
 
-  it('return false if cords are not in a valid range', () => {
+  it('return false if the cords are not in a valid range', () => {
     const ship = createShip({ length: 3 });
 
     expect(createGameBoard().placeShipAt(ship, { x: 10, y: -12, isVertical: true })).toBe(false);
   });
 
-  it('work with default horizontal position if is not defined', () => {
+  it('it works with default horizontal position if it is not defined', () => {
     expect(createGameBoard().placeShipAt(createShip({ length: 2 }), { x: 0, y: 0 })).toBe(true);
   });
 
-  it('return false if cords are not specified', () => {
+  it('return false if the cords are not specified', () => {
     const ship = createShip({ length: 3 });
 
     expect(createGameBoard().placeShipAt(ship)).toBe(false);
@@ -48,14 +48,14 @@ describe('createGameBoard', () => {
     expect(createGameBoard().placeShipAt(ship, { isVertical: true })).toBe(false);
   });
 
-  it('The ships cannot overlap', () => {
+  it('the ships cannot overlap', () => {
     const gameBoard = createGameBoard();
 
     expect(gameBoard.placeShipAt(createShip({ length: 3 }), { x: 0, y: 0 })).toBe(true);
     expect(gameBoard.placeShipAt(createShip({ length: 3 }), { x: 0, y: 0 })).toBe(false);
   });
 
-  it('The ships cannot stay side by side', () => {
+  it('the ships cannot stay side by side', () => {
     const gameBoard = createGameBoard();
 
     expect(gameBoard.placeShipAt(createShip({ length: 2 }), { x: 0, y: 0 })).toBe(true);
@@ -64,7 +64,7 @@ describe('createGameBoard', () => {
     expect(gameBoard.placeShipAt(createShip({ length: 2 }), { x: 0, y: 2 })).toBe(true);
   });
 
-  it('The ships cannot be placed outside the board', () => {
+  it('the ships cannot be placed outside the board', () => {
     const gameBoard = createGameBoard();
 
     expect(gameBoard.placeShipAt(createShip({ length: 3 }), { x: 8, y: 2 })).toBe(false);
@@ -107,7 +107,7 @@ describe('createGameBoard', () => {
     expect(gameBoard.placeShipAt(createShip({ length: 1 }), { x: 0, y: 8 })).toBe(false);
   });
 
-  it('it can be 10 ships only on a board', () => {
+  it('it can be only 10 ships on the board', () => {
     const gameBoard = createGameBoard();
 
     expect(gameBoard.setBoardToReady().isReady()).toBe(false);
@@ -127,7 +127,7 @@ describe('createGameBoard', () => {
     expect(gameBoard.setBoardToReady().isReady()).toBe(true);
   });
 
-  it('can take hits only when board is ready | return false', () => {
+  it('a ship can take hits only when the board is ready || return false', () => {
     const gameBoard = createGameBoard();
 
     expect(gameBoard.receiveAttack({ x: 0, y: 0 })).toBe(false);
@@ -139,7 +139,7 @@ describe('createGameBoard', () => {
     expect(gameBoard.setBoardToReady().isReady()).toBe(false);
   });
 
-  it('place ships on random cords on board', () => {
+  it('place the ships on random cords on the board', () => {
     const gameBoard = createGameBoard();
 
     expect(gameBoard.placeShipRandom(createShip({ length: 4 }))).toBeTruthy();
@@ -158,7 +158,7 @@ describe('createGameBoard', () => {
     expect(gameBoard.getAliveShipsCount()).toBe(10);
   });
 
-  it('take hits when is board is ready | return true if it was hit | false if it was  missed | * if twice ', () => {
+  it('take hits when the board is ready | return true if it was hit | false if it was  missed | * if twice ', () => {
     const gameBoard = createGameBoard();
 
     expect(gameBoard.placeShipAt(createShip({ length: 4 }), { x: 0, y: 0 })).toBe(true);
