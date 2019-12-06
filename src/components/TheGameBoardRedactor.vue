@@ -98,6 +98,7 @@ export default {
           cords.push({ x: j, y: i });
         }
       }
+
       return cords;
     },
 
