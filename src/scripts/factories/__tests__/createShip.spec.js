@@ -42,7 +42,7 @@ describe('createShip', () => {
     ).toBe('');
   });
 
-  it('ship with 1 or more lives is not sunk', () => {
+  it('a ship with 1 or more lives is not sunk', () => {
     const ship = createShip({ length: 4 });
 
     expect(ship.isSunk()).toBe(false);
@@ -52,7 +52,7 @@ describe('createShip', () => {
     expect(ship.hitAt({ position: 4 }).isSunk()).toBe(true);
   });
 
-  it('alive ship has empty or undefined values in lives array', () => {
+  it('alive ship has empty or undefined values in its lives array', () => {
     expect(
       createShip({ length: 3 })
         .hitAt({ position: 2 })
@@ -68,7 +68,7 @@ describe('createShip', () => {
     ).toBe('');
   });
 
-  it('return an array full of x equal with ship length if it is sunk', () => {
+  it('return an array full of x equal with ship length if it was sunk', () => {
     const ship = createShip({ length: 2 });
 
     // 1x == total ship lives - 1
