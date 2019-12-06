@@ -98,6 +98,7 @@ export default {
           this.gameHasAwinner = true;
           this.gameMenuOptions.resume.isDisabled = true;
           this.$refs.game.updateGameInfo('Congratulations you won The Game', 'rgb(43, 197, 87)');
+          setTimeout(this.handleShowGameMenu, 3000);
 
           return;
         }
@@ -116,6 +117,7 @@ export default {
               this.gameHasAwinner = true;
               this.gameMenuOptions.resume.isDisabled = true;
               this.$refs.game.updateGameInfo('Pc won The Game!', 'rgb(226, 54, 54)');
+              setTimeout(this.handleShowGameMenu, 3000);
 
               return;
             }
