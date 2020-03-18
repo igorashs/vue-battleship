@@ -9,6 +9,7 @@
 ```bash
 git clone https://github.com/igorashs/vue-battleship.git
 cd vue-battleship
+npm install
 npm run serve
 ```
 ### Testing with jest
